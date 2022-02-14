@@ -48,15 +48,22 @@ export function STAFF_ACTION (state, payload) {
         if (index == -1) {
             // This means the user does not exist, so I have to add it to our vuex state
             allStaff.push(data)
+        } else {
+            /* 
+                For the fact that the user exists, and the snapshot returns
+                the entire user's profile, just wipe and update the 
+                element in the array matching the index
+            */
+            allStaff[index] = data
         }
     }
     if (action === 'modified') {
-        // We will fetch the particular user that was modified, using the index, then update the data
-        // allStaff[index] = data
-        // First get the obj, then use the hasOwnProperty to check for new keys, and update their values
-        // Or simply add the new key-value pairs since it's missin... 
+        allStaff[index] = data
     }
-    if (action === 'removed') {}
+    if (action === 'removed') {
+        // This would remove the user from the state
+        allStaff.splice(index,1)
+    }
     state.allStaff = allStaff
 }
 

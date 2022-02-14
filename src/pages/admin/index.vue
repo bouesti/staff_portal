@@ -57,10 +57,10 @@
          -->
         <div class="row q-col-gutter-lg q-px-lg q-mt-lg">
             <div v-if="!filteredStaff.length" class="col-12 text-center text-bold text-grey text-h4"> Sorry, No Record Found. </div>
-            <div v-else class="col-12 col-sm-6 col-md-3" v-for="staff in filteredStaff" :key="staff.id">
+            <div v-else class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="staff in filteredStaff" :key="staff.id">
                 <q-card >
-                    <img v-if="staff.displayImage ? staff.displayImage.length : false" :src="staff.displayImage" height="200">
-                    <img v-else src="~assets/logo.png" alt="Bouesti Logo" height="200" />
+                    <img v-if="staff.displayImage ? staff.displayImage.length : false" :src="staff.displayImage" height="300">
+                    <img v-else src="~assets/logo.png" alt="Bouesti Logo" height="300" />
 
                     <q-card-section>
                         <q-list separator>
@@ -93,7 +93,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import db from 'src/boot/firebase.js'
+import { collection, query, onSnapshot } from "firebase/firestore";
+import { mapGetters, mapActions } from 'vuex'
 export default {
     name: 'View_Staff_page',
     computed: {
@@ -135,7 +137,13 @@ export default {
             selectedDepartment: '',
         }
     },
+    mounted () {
+      const _ = this
+      _.listen_to_staff()
+      _.load_bouesti_structures()
+    },
     methods: {
+        ...mapActions('staff', ['LOAD_BOUESTI_STRUCTURES', 'STAFF_ACTION']),
         viewSingleStaff (id) {
             const _ = this
             /* 
@@ -160,6 +168,40 @@ export default {
             const _ = this
             _.selectedDepartment = val
         },
+        ...mapActions('staff', ['LOAD_BOUESTI_STRUCTURES', 'STAFF_ACTION']),
+      listen_to_staff () {
+        const _ = this
+        const q = query(collection(db, "allStaff"));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+          snapshot.docChanges().forEach((change) => {
+            // console.log(change.doc.data())
+            if (change.type === "added") {
+              // Add an ACTION to add staff to the state
+                _.STAFF_ACTION({action: change.type, data: change.doc.data()})
+            }
+            if (change.type === "modified") {
+              // Add an ACTION to update staff to the state
+              _.STAFF_ACTION({action: change.type, data: change.doc.data()})
+            }
+            if (change.type === "removed") {
+              // Add an ACTION to remove staff to the state
+            //   Have a code to push removed staff to a new table
+              _.STAFF_ACTION({action: change.type, data: change.doc.data()})
+            }
+          });
+        });
+      },
+      load_bouesti_structures () {
+        const _ = this
+        const q = query(collection(db, "bouesti_structure"));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          const obj = {}
+          querySnapshot.forEach((doc) => {
+            Object.assign(obj, doc.data())
+          });
+          _.LOAD_BOUESTI_STRUCTURES(obj)
+        });
+      }
     },
     watch: {
         selectedCollege (val) {

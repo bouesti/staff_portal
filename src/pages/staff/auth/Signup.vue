@@ -159,7 +159,7 @@ export default {
             }).then((res) => {
                 _.isLoading = false
                 _.notifyAlert('info', 'mdi-access-point', 'Successfully Logged In', 'bottom')
-                _.$router.push({name: 'Dashboard'})
+                _.$router.push({name: 'Staff_auth'})
             })
             .catch((error) => {
                 _.isLoading = false

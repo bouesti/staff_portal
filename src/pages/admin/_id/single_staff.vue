@@ -8,7 +8,7 @@
                 <q-card-section>
                     <div class="row q-col-gutter-md">
                         <div class="col-12 col-sm-4">
-                            <img v-if="currentStaff.displayImage ? currentStaff.displayImage.length : false" :src="currentStaff.displayImage" alt="Staff Image" style="width: 100%;" :style="$q.screen.lt.sm ? 'border-radius: 10px 10px 0px 0px;' : 'border-radius: 10px 0px 0px 10px;'" />
+                            <img v-if="currentStaff.displayImage ? currentStaff.displayImage.length : false" :src="currentStaff.displayImage" alt="Staff Image" style="width: 100%; height: 300px;" :style="$q.screen.lt.sm ? 'border-radius: 10px 10px 0px 0px;' : 'border-radius: 10px 0px 0px 10px;'" />
                             <img v-else src="~assets/logo.png" alt="Bouesti Logo" style="width: 100%;" :style="$q.screen.lt.sm ? 'border-radius: 10px 10px 0px 0px;' : 'border-radius: 10px 0px 0px 10px;'" />
                         </div>
                         <div class="col-12 col-sm-8 col-md-6">
@@ -62,8 +62,8 @@
                 <q-card-section v-if="!currentStaff.cvLink.length">
                     <div class="text-center">
                         <div>
-                            <img src="~assets/img/cv.png" />
-                            <div class="text-grey text-h6 q-mb-sm"> Please upload you Curriculum Vitae </div>
+                            <img src="~assets/img/cv.png" style="width: 100%;" />
+                            <div class="text-grey text-h6 q-mb-sm"> {{ currentStaff.title }} {{ currentStaff.surname }} has not uploaded Cv yet. </div>
                         </div>
                     </div>
                 </q-card-section>
@@ -85,7 +85,7 @@
                     <!-- <div v-if="!currentStaff.publications.length" class="text-center"> -->
                     <div v-if="!currentStaff.publications.length" class="text-center">
                         <div>
-                            <img src="~assets/img/author.png" />
+                            <img src="~assets/img/author.png" style="width: 100%;"/>
                             <div class="text-grey text-h6 q-mb-sm"> {{ currentStaff.title }}. {{ currentStaff.surname }} has no publications on this profile. </div>
                         </div>
                     </div>
@@ -97,7 +97,15 @@
                                     <img :src="pub.image" height="250">
 
                                     <q-card-section>
-                                        <div class="text-h5 text-bold text-grey">{{ pub.title }}</div>
+                                         <q-list>
+                                            <q-item>
+                                                <q-item-section>
+                                                    <q-item-label lines="2" class="text-h6 text-bold text-grey">
+                                                        {{ pub.title }}
+                                                    </q-item-label>
+                                                </q-item-section>
+                                            </q-item>
+                                        </q-list>
                                     </q-card-section>
                                     <q-separator inset />
                                     <q-card-section class="q-pt-none">
@@ -128,7 +136,10 @@
 </style>
 
 <script>
+import db from 'src/boot/firebase.js'
+import { doc, getDoc } from "firebase/firestore";
 import { mapGetters } from 'vuex'
+import { Loading, QSpinnerGears } from 'quasar'
 export default {
     name: 'Single-Staff-Page',
     computed: {
@@ -155,12 +166,44 @@ export default {
     mounted() {
         const _ = this
         const currentStaffId = _.$route.params.id
+        Loading.show({
+            spinner: QSpinnerGears,
+            // other props
+        })
+        // Once you get the ID, make a request to Firebase
+        // Reason being that, a staff might simply add his link to the profile.
+        // Meaning that visitors won't go through the index page, where the normal request to firebase was made.
         _.getCurrentStaff(currentStaffId)
     },
     methods: {
-        getCurrentStaff (id) {
+        async getCurrentStaff (id) {
             const _ = this
-            _.currentStaff = _.getStaff.filter((staff) => staff.id === id)[0]
+            // _.currentStaff = _.getStaff.filter((staff) => staff.id === id)[0]
+            const docRef = doc(db, "allStaff", id);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                _.currentStaff = docSnap.data()
+                Loading.hide()
+            } else {
+                // doc.data() will be undefined in this case
+                _.notifyAlert('negative', 'mdi-information', 'Can\'t load Staff, you will be redirected to staff. page', 'center')
+                setTimeout(() => {
+                    Loading.hide()
+                    _.$router.push({name: 'View_Staff'})
+                }, 2000)
+                // Use a preloader here
+            }
+        },
+         notifyAlert (type, icon, msg, position) {
+            const _ = this
+            _.$q.notify({
+                type: type,
+                icon: icon,
+                message: msg,
+                position: position,
+                time: 1000
+            })
         }
     }
 }
