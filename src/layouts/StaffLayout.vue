@@ -53,14 +53,14 @@
             </div>
             <q-item clickable v-ripple :to="{ name: 'View_Staff' }">
               <q-item-section avatar>
-                <q-icon color="red" name="mdi-account-group-outline" />
+                <q-icon name="mdi-account-group-outline" />
               </q-item-section>
 
               <q-item-section >
                 View Staff Log
               </q-item-section>
             </q-item>
-            <q-item clickable v-ripple >
+            <q-item clickable v-ripple @click="logUserOut()">
               <q-item-section avatar>
                 <q-icon color="red" name="mdi-location-exit" />
               </q-item-section>
@@ -91,7 +91,9 @@
 </template>
 
 <script>
+import { getAuth, signOut } from "firebase/auth";
 import { mapGetters } from 'vuex'
+import { Loading, QSpinnerGears } from 'quasar'
 export default {
   name: 'Staff-Layout',
   computed: {
@@ -113,5 +115,24 @@ export default {
       leftDrawerOpen: false,
     }
   },
+  methods: {
+    logUserOut () {
+      const _ = this
+      Loading.show({spinner: QSpinnerGears})
+      const auth = getAuth();
+      signOut(auth).then(() => {
+        // Sign-out successful.
+        localStorage.clear()
+        setTimeout(() => {
+          Loading.hide()
+          _.$router.push({name: 'Staff_auth'})
+          localStorage.clear()
+        }, 3000)
+      }).catch((error) => {
+        // An error happened.
+        Loading.hide()
+      });
+    }
+  }
 }
 </script>

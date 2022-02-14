@@ -21,3 +21,4 @@ export default store(function (/* { ssrContext } */) {
 
   return Store
 })
+

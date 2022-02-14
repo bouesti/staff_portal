@@ -51,7 +51,11 @@ export default {
             isLoading: false
         }
     },
-    mounted () {},
+    mounted () {
+        setTimeout(() => {
+            localStorage.clear()
+        }, 2000)
+    },
     methods: {
         ...mapActions('staff', ['LOAD_CURRENT_USER']),
         login () {
@@ -81,7 +85,8 @@ export default {
                 _.isLoading = false
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                _.notifyAlert('negative', 'mdi-alert', errorMessage, 'bottom')
+                // _.notifyAlert('negative', 'mdi-alert', errorMessage, 'bottom')
+                _.notifyAlert('negative', 'mdi-alert', 'Invalid email & password', 'bottom')
                 // .. Add a notification alert here
             });
         },

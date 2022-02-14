@@ -1,4 +1,4 @@
-
+import Store from '../store/index'
 const routes = [
   {
     path: '/',
@@ -18,6 +18,14 @@ const routes = [
   {
     path: '/staffPortal',
     component: () => import('layouts/StaffLayout.vue'),
+    beforeEnter: (to, from, next) => {
+      const token = Store().state.staff.user.id
+      if (token) {
+        next()
+      } else {
+        next({ name: 'Staff_auth' })
+      }
+    },
     children: [
       { path: 'Dashboard', component: () => import('pages/staff/main/Dashboard.vue'), name: 'Dashboard' },
       { path: 'Profile', component: () => import('pages/staff/main/Profile.vue'), name: 'Profile' },
