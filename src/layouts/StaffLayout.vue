@@ -53,6 +53,15 @@
             </div>
             <q-item clickable v-ripple :to="{ name: 'View_Staff' }">
               <q-item-section avatar>
+                <q-icon color="red" name="mdi-account-group-outline" />
+              </q-item-section>
+
+              <q-item-section >
+                View Staff Log
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple >
+              <q-item-section avatar>
                 <q-icon color="red" name="mdi-location-exit" />
               </q-item-section>
 
