@@ -17,49 +17,50 @@
           <q-list padding separator>
             <!-- General Link -->
             <div>
-              <q-item-label header>General</q-item-label>
-              <q-separator  inset class="q-mx-lg" />
+                <q-item-label header>General</q-item-label>
+                <q-separator  inset class="q-mx-lg" />
 
-              <q-item clickable v-ripple v-close-popup :to="{ name: 'Dashboard' }">
-                <q-item-section avatar>
-                  <q-icon name="mdi-monitor-dashboard" />
-                </q-item-section>
+                <q-item clickable v-ripple v-close-popup :to="{ name: 'Dashboard' }">
+                  <q-item-section avatar>
+                    <q-icon name="mdi-monitor-dashboard" />
+                  </q-item-section>
 
-                <q-item-section>
-                  My Dashboard
-                </q-item-section>
-              </q-item>
+                  <q-item-section>
+                    My Dashboard
+                  </q-item-section>
+                </q-item>
+                <q-separator inset />
+                <q-item clickable v-ripple v-close-popup :to="{ name: 'Profile' }">
+                  <q-item-section avatar>
+                    <q-icon name="mdi-account-outline" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Profile
+                  </q-item-section>
+                </q-item>
+                <q-separator inset />
+                <q-item clickable v-ripple v-close-popup :to="{ name: 'StaffUpload' }">
+                  <q-item-section avatar>
+                    <q-icon name="mdi-cloud-upload-outline" />
+                  </q-item-section>
+
+                  <q-item-section>
+                  Upload Document
+                  </q-item-section>
+                </q-item>
               <q-separator inset />
-              <q-item clickable v-ripple v-close-popup :to="{ name: 'Profile' }">
-                <q-item-section avatar>
-                  <q-icon name="mdi-account-outline" />
-                </q-item-section>
-
-                <q-item-section>
-                  Profile
-                </q-item-section>
-              </q-item>
-              <q-separator inset />
-              <q-item clickable v-ripple v-close-popup :to="{ name: 'StaffUpload' }">
-                <q-item-section avatar>
-                  <q-icon name="mdi-cloud-upload-outline" />
-                </q-item-section>
-
-                <q-item-section>
-                Upload Document
-                </q-item-section>
-              </q-item>
-            <q-separator inset />
             </div>
-              <q-item clickable v-ripple :to="{ name: 'View_Staff' }">
-                <q-item-section avatar>
-                  <q-icon color="red" name="mdi-location-exit" />
-                </q-item-section>
+            <q-item clickable v-ripple :to="{ name: 'View_Staff' }">
+              <q-item-section avatar>
+                <q-icon color="red" name="mdi-location-exit" />
+              </q-item-section>
 
-                <q-item-section >
-                  Logout
-                </q-item-section>
-              </q-item>
+              <q-item-section >
+                Logout
+              </q-item-section>
+            </q-item>
+
           </q-list>
         </q-scroll-area>
 
