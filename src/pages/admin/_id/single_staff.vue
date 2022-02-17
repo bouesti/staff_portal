@@ -39,16 +39,16 @@
                                         </q-item>
                                     </a>
                                     <q-separator />
-                                    <q-item clickable v-ripple>
+                                    <q-item clickable v-ripple v-if="currentStaff.designation">
                                         <q-item-section>
                                             <q-item-label overline> Designation </q-item-label>
                                             <q-item-label> {{ currentStaff.designation }} </q-item-label>
                                         </q-item-section>
                                     </q-item>
-                                    <q-item clickable v-ripple>
+                                    <q-item clickable v-ripple v-else>
                                         <q-item-section>
                                             <q-item-label overline> Institution Details </q-item-label>
-                                            <q-item-label> {{ currentStaff.college }} | {{ currentStaff.school }} | {{ currentStaff.department }} </q-item-label>
+                                            <q-item-label > {{ currentStaff.college }} | {{ currentStaff.school }} | {{ currentStaff.department }} </q-item-label>
                                         </q-item-section>
                                     </q-item>
                                 </q-list>
@@ -62,7 +62,7 @@
                 <q-card-section v-if="!currentStaff.cvLink.length">
                     <div class="text-center">
                         <div>
-                            <img src="~assets/img/cv.png" style="width: 100%;" />
+                            <img src="~assets/img/cv.png" :style="$q.screen.lt.sm ? 'width: 100%;' :'width: 50%;'" />
                             <div class="text-grey text-h6 q-mb-sm"> {{ currentStaff.title }} {{ currentStaff.surname }} has not uploaded Cv yet. </div>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                     <!-- <div v-if="!currentStaff.publications.length" class="text-center"> -->
                     <div v-if="!currentStaff.publications.length" class="text-center">
                         <div>
-                            <img src="~assets/img/author.png" style="width: 100%;"/>
+                            <img src="~assets/img/author.png" :style="$q.screen.lt.sm ? 'width: 100%;' :'width: 50%;'"  />
                             <div class="text-grey text-h6 q-mb-sm"> {{ currentStaff.title }}. {{ currentStaff.surname }} has no publications on this profile. </div>
                         </div>
                     </div>

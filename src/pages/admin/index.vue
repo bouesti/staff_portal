@@ -8,34 +8,58 @@
                         <q-btn no-caps :outline="!allStaff" rounded color="primary" label="All" class="q-px-lg" @click="allStaff = !allStaff" />
                     </div>
                     <div class="q-pb-sm">
-                        <q-btn-dropdown no-caps outline rounded color="primary" label="College">
+                        <q-btn-dropdown no-caps outline rounded color="primary" :label="currentStaffMode">
                             <q-list>
-                                <q-item clickable v-close-popup v-for="college in collegeOptions" :key="college" @click="selectCollege(college)">
+                                <q-item clickable v-close-popup v-for="staff in staffStatusOptions" :key="staff" @click="selectStaffMode(staff)">
                                     <q-item-section>
-                                        <q-item-label>{{ college }}</q-item-label>
+                                        <q-item-label>{{ staff }}</q-item-label>
                                     </q-item-section>
                                 </q-item>
                             </q-list>
                         </q-btn-dropdown>
                     </div>
-                    <div class="q-pb-sm">
-                        <q-btn-dropdown no-caps outline rounded color="primary" label="School">
-                            <q-list>
-                                <q-item clickable v-close-popup v-for="school in schoolOptions" :key="school" @click="selectSchool(school)">
-                                    <q-item-section>
-                                        <q-item-label>{{ school }}</q-item-label>
-                                    </q-item-section>
-                                </q-item>
-                            </q-list>
-                        </q-btn-dropdown>
+                    <div v-if="currentStaffMode == 'Academic'" class="row q-gutter-sm">
+                        <div class="q-pb-sm">
+                            <q-btn-dropdown no-caps :outline="!selectedCollege" rounded color="primary" label="College">
+                                <q-list>
+                                    <q-item clickable v-close-popup v-for="college in collegeOptions" :key="college" @click="selectCollege(college)">
+                                        <q-item-section>
+                                            <q-item-label>{{ college }}</q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </q-btn-dropdown>
+                        </div>
+                        <div class="q-pb-sm">
+                            <q-btn-dropdown no-caps :outline="!selectedSchool" rounded color="primary" label="School">
+                                <q-list>
+                                    <q-item clickable v-close-popup v-for="school in schoolOptions" :key="school" @click="selectSchool(school)">
+                                        <q-item-section>
+                                            <q-item-label>{{ school }}</q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </q-btn-dropdown>
+                        </div>
+                        <div class="q-pb-sm" :style="$q.screen.lt.sm ? 'margin: 0 auto;' : '' ">
+                            <q-btn-dropdown no-caps :outline="!selectedDepartment" rounded color="primary" label="Department">
+                                <q-list>
+                                    <q-item clickable v-close-popup v-for="department in departmentOptions" :key="department" @click="selectDepartment(department)">
+                                        <q-item-section>
+                                            <q-item-label>{{ department }}</q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </q-btn-dropdown>
+                        </div>
                     </div>
-                    <div class="q-pb-sm" :style="$q.screen.lt.sm ? 'margin: 0 auto;' : '' ">
-                        <q-btn-dropdown no-caps outline rounded color="primary" label="Department">
+                    <!-- The Non-Academic Staff starts here... -->
+                    <div v-else class="q-pb-sm" :style="$q.screen.lt.sm ? 'margin: 0 auto;' : '' ">
+                        <q-btn-dropdown no-caps outline rounded color="primary" label="Designation">
                             <q-list>
-                                <!-- <q-item clickable v-close-popup @click="onItemClick"> -->
-                                <q-item clickable v-close-popup v-for="department in departmentOptions" :key="department" @click="selectDepartment(department)">
+                                <q-item clickable v-close-popup v-for="designation in getBouestiStaffDesignation" :key="designation" @click="selectDesignation(designation)">
                                     <q-item-section>
-                                        <q-item-label>{{ department }}</q-item-label>
+                                        <q-item-label>{{ designation }}</q-item-label>
                                     </q-item-section>
                                 </q-item>
                             </q-list>
@@ -76,8 +100,11 @@
                             </q-item>
                             <q-item>
                                 <q-item-section>
-                                    <q-item-label overline> Designation | Department </q-item-label>
-                                    <q-item-label lines="1" class="text-subtitle2 text-grey-8"> <b> {{ staff.designation }} </b> | {{ staff.department }} </q-item-label>
+                                    <!-- <q-item-label overline> Designation | Department </q-item-label> -->
+                                    <q-item-label overline> {{ staff.designation ? 'Designation' : 'Department' }} </q-item-label>
+                                    <q-item-label lines="1" class="text-subtitle2 text-grey-8">
+                                        {{ staff.designation ? staff.designation : staff.department }}
+                                    </q-item-label>
                                 </q-item-section>
                             </q-item>
                         </q-list>
@@ -99,7 +126,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
     name: 'View_Staff_page',
     computed: {
-        ...mapGetters('staff', ['getUser', 'getBouestiStructure', 'getStaff']),
+        ...mapGetters('staff', ['getUser', 'getBouestiStructure', 'getStaff', 'getBouestiStaffDesignation']),
         collegeOptions () {
             const _ = this
             var keys =  Object.keys(_.getBouestiStructure)
@@ -112,7 +139,8 @@ export default {
                 staffArr = []
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 _.selectedCollege = _.selectedSchool =_.selectedDepartment = ''
-                staffArr = _.getStaff
+                // staffArr = _.getStaff
+                staffArr = _.getStaff.filter((staff) => staff.staffStatus == _.currentStaffMode)
             }
             if (_.selectedCollege.length) {
                 staffArr = _.getStaff.filter((staff) => staff.college == _.selectedCollege)
@@ -123,6 +151,11 @@ export default {
             if (_.selectedDepartment.length) {
                 staffArr = _.getStaff.filter((staff) => staff.college == _.selectedCollege && staff.school == _.selectedSchool && staff.department == _.selectedDepartment)
             }
+            if (_.selectedDesignation.length) {
+                staffArr = []
+                staffArr = _.getStaff
+                staffArr = _.getStaff.filter((staff) => staff.designation == _.selectedDesignation)
+            }
             return staffArr.filter((staff) => staff.surname.toLowerCase().match(_.search_input.trim().toLowerCase()) ||  staff.otherNames.toLowerCase().match(_.search_input.trim().toLowerCase()))
         }
     },
@@ -130,11 +163,14 @@ export default {
         return {
             search_input: '',
             departmentOptions: [],
+            currentStaffMode: 'Academic',
+            staffStatusOptions: ['Academic', 'Non-Academic'],
             schoolOptions: [],
             allStaff: true,
             selectedSchool: '',
             selectedCollege: '',
             selectedDepartment: '',
+            selectedDesignation: '',
         }
     },
     mounted () {
@@ -143,7 +179,7 @@ export default {
       _.load_bouesti_structures()
     },
     methods: {
-        ...mapActions('staff', ['LOAD_BOUESTI_STRUCTURES', 'STAFF_ACTION']),
+        ...mapActions('staff', ['LOAD_BOUESTI_STRUCTURES', 'STAFF_ACTION', 'LOAD_BOUESTI_STAFF_TITLE']),
         viewSingleStaff (id) {
             const _ = this
             /* 
@@ -168,40 +204,58 @@ export default {
             const _ = this
             _.selectedDepartment = val
         },
-        ...mapActions('staff', ['LOAD_BOUESTI_STRUCTURES', 'STAFF_ACTION']),
-      listen_to_staff () {
-        const _ = this
-        const q = query(collection(db, "allStaff"));
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-          snapshot.docChanges().forEach((change) => {
-            // console.log(change.doc.data())
-            if (change.type === "added") {
-              // Add an ACTION to add staff to the state
+        listen_to_staff () {
+            const _ = this
+            const q = query(collection(db, "allStaff"));
+            const unsubscribe = onSnapshot(q, (snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                // console.log(change.doc.data())
+                if (change.type === "added") {
+                // Add an ACTION to add staff to the state
+                    _.STAFF_ACTION({action: change.type, data: change.doc.data()})
+                }
+                if (change.type === "modified") {
+                // Add an ACTION to update staff to the state
                 _.STAFF_ACTION({action: change.type, data: change.doc.data()})
-            }
-            if (change.type === "modified") {
-              // Add an ACTION to update staff to the state
-              _.STAFF_ACTION({action: change.type, data: change.doc.data()})
-            }
-            if (change.type === "removed") {
-              // Add an ACTION to remove staff to the state
-            //   Have a code to push removed staff to a new table
-              _.STAFF_ACTION({action: change.type, data: change.doc.data()})
-            }
-          });
-        });
-      },
-      load_bouesti_structures () {
-        const _ = this
-        const q = query(collection(db, "bouesti_structure"));
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          const obj = {}
-          querySnapshot.forEach((doc) => {
-            Object.assign(obj, doc.data())
-          });
-          _.LOAD_BOUESTI_STRUCTURES(obj)
-        });
-      }
+                }
+                if (change.type === "removed") {
+                // Add an ACTION to remove staff to the state
+                //   Have a code to push removed staff to a new table
+                _.STAFF_ACTION({action: change.type, data: change.doc.data()})
+                }
+            });
+            });
+        },
+        load_bouesti_structures () {
+            const _ = this
+            const q = query(collection(db, "bouesti_structure"));
+            const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const obj = {}
+            querySnapshot.forEach((doc) => {
+                Object.assign(obj, doc.data())
+            });
+            _.LOAD_BOUESTI_STRUCTURES(obj)
+            });
+        },
+        load_bouesti_staff_title () {
+            const _ = this
+            const q = query(collection(db, "staff_title"));
+            const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const obj = {}
+            querySnapshot.forEach((doc) => {
+                Object.assign(obj, doc.data())
+            });
+            _.LOAD_BOUESTI_STAFF_TITLE(obj)
+            });
+        },
+        selectStaffMode (val) {
+            const _ = this
+            _.currentStaffMode = val
+        },
+        selectDesignation (val) {
+            const _ = this
+            _.selectedDesignation = val
+        },
     },
     watch: {
         selectedCollege (val) {
@@ -224,6 +278,14 @@ export default {
                 _.departmentOptions = values
             }
         },
+        currentStaffMode (val) {
+            // Here we will check to see when it changes, then clear the previous selections
+            const _ = this
+            _.selectedDesignation = ''
+            _.selectedCollege  = '';
+            _.selectedSchool  = '';
+            _.selectedDepartment  = '';
+        }
     }
 }
 </script>
