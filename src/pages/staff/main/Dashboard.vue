@@ -35,9 +35,10 @@
                 </div>
                 <div v-else class="row q-col-gutter-lg q-mt-sm">
                     <div class="col-xs-12 col-sm-6 col-md-4" v-for="pub in sortPublications" :key="pub.id">
-                        <a :href="pub.pubLink" :title="pub.title" target="_blank" nofollow>
                             <q-card class="my-card">
-                                <img :src="pub.image" height="300">
+                                <a :href="pub.pubLink" :title="pub.title" target="_blank" nofollow>
+                                    <img :src="pub.image" height="300">
+                                </a>
                                 <div class="delete_btn">
                                     <q-btn round outline no-caps color="red" icon="mdi-delete" @click="delete_Publication(pub.id)" />
                                 </div>
@@ -65,7 +66,6 @@
                                     </q-list>
                                 </q-card-section>
                             </q-card>
-                        </a>
                     </div>
                 </div>
             </q-card-section>

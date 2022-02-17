@@ -89,7 +89,7 @@ import { mapGetters } from 'vuex';
 export default {
     name: 'Signup_page',
     computed: {
-        ...mapGetters('staff', ['getBouestiStructure']),
+        ...mapGetters('staff', ['getBouestiStructure', 'getBouestiStaffTitle', 'getBouestiStaffDesignation']),
         collegeOptions () {
             const _ = this
             var keys =  Object.keys(this.getBouestiStructure)
@@ -102,7 +102,7 @@ export default {
             isLoading: false,
             step: 1,
             title: '',
-            titleOptions: ['Mr','Mrs', 'Dr', 'Prof'],
+            titleOptions: [],
             surname: '',
             othername: '',
             email: '',
@@ -118,6 +118,9 @@ export default {
         }
     },
     mounted() {
+        const _ = this
+        _.titleOptions = _.getBouestiStaffTitle
+        _.designationOptions = _.getBouestiStaffDesignation
     },
     methods: {
         register () {

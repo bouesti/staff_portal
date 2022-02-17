@@ -2,6 +2,10 @@
 export function LOAD_BOUESTI_STRUCTURES (state, payload) {
     state.bouesti_structure = payload
 }
+export function LOAD_BOUESTI_STAFF_TITLE (state, payload) {
+    state.bouesti_staff_title = payload['title']
+    state.bouesti_staff_designation = payload['designation']
+}
 
 export function LOAD_CURRENT_USER (state, payload) {
     let stateUser = state.user

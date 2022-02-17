@@ -31,9 +31,10 @@ export default {
       const _ = this
       _.listen_to_staff()
       _.load_bouesti_structures()
+      _.load_bouesti_staff_title()
     },
     methods: {
-      ...mapActions('staff', ['LOAD_BOUESTI_STRUCTURES', 'STAFF_ACTION']),
+      ...mapActions('staff', ['LOAD_BOUESTI_STRUCTURES', 'LOAD_BOUESTI_STAFF_TITLE', 'STAFF_ACTION']),
       listen_to_staff () {
         const _ = this
         const q = query(collection(db, "allStaff"));
@@ -64,7 +65,18 @@ export default {
           });
           _.LOAD_BOUESTI_STRUCTURES(obj)
         });
-      }
+      },
+      load_bouesti_staff_title () {
+        const _ = this
+        const q = query(collection(db, "staff_title"));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          const obj = {}
+          querySnapshot.forEach((doc) => {
+            Object.assign(obj, doc.data())
+          });
+          _.LOAD_BOUESTI_STAFF_TITLE(obj)
+        });
+      },
     }
 }
 </script>
