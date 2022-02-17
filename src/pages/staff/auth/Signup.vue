@@ -196,7 +196,8 @@ export default {
                 _.isLoading = false
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                _.notifyAlert('negative', 'mdi-alert', errorMessage, 'bottom')
+                console.log(errorMessage)
+                _.notifyAlert('negative', 'mdi-alert', 'Please password must be 6 characters and above', 'bottom')
             });
         },
         notifyAlert (type, icon, msg, position) {

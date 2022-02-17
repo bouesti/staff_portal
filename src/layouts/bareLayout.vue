@@ -32,6 +32,7 @@ export default {
       _.listen_to_staff()
       _.load_bouesti_structures()
       _.load_bouesti_staff_title()
+
     },
     methods: {
       ...mapActions('staff', ['LOAD_BOUESTI_STRUCTURES', 'LOAD_BOUESTI_STAFF_TITLE', 'STAFF_ACTION']),
