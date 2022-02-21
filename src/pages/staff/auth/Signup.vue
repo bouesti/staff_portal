@@ -43,17 +43,28 @@
                         <div>
                             <div class="row q-col-gutter-md">
                                 <div class="col-12">
-                                    <q-select filled v-model="designation" color="primary" :options="designationOptions" label="Designation" />
+                                    <q-select filled v-model="staffStatus" color="primary" :options="staffStatusOptions" label="Select Staff Status" />
                                 </div>
-                                <div class="col-12">
-                                    <q-select filled v-model="college" color="primary" :options="collegeOptions" label="College" />
-                                </div>
-                                <div class="col-12">
-                                    <q-select filled v-model="school" color="primary" :options="schoolOptions" label="School" />
-                                </div>
-                                <div class="col-12">
-                                    <q-select filled v-model="department" color="primary" :options="departmentOptions" label="Department" />
-                                </div>
+                                <q-slide-transition>
+                                    <div class="col-12 q-col-gutter-md" v-show="staffStatus == 'Academic'">
+                                        <div class="col-12">
+                                            <q-select filled v-model="college" color="primary" :options="collegeOptions" label="College" />
+                                        </div>
+                                        <div class="col-12">
+                                            <q-select filled v-model="school" color="primary" :options="schoolOptions" label="School" />
+                                        </div>
+                                        <div class="col-12">
+                                            <q-select filled v-model="department" color="primary" :options="departmentOptions" label="Department" />
+                                        </div>
+                                    </div>
+                                </q-slide-transition>
+                                <q-slide-transition>
+                                    <div class="col-12 q-col-gutter-md" v-show="staffStatus == 'Non-Academic'">
+                                        <div class="col-12">
+                                            <q-select filled v-model="designation" color="primary" :options="designationOptions" label="Designation" />
+                                        </div>
+                                    </div>
+                                </q-slide-transition>
                             </div>
                             <div>
                                 <q-stepper-navigation>
@@ -89,7 +100,7 @@ import { mapGetters } from 'vuex';
 export default {
     name: 'Signup_page',
     computed: {
-        ...mapGetters('staff', ['getBouestiStructure']),
+        ...mapGetters('staff', ['getBouestiStructure', 'getBouestiStaffTitle', 'getBouestiStaffDesignation']),
         collegeOptions () {
             const _ = this
             var keys =  Object.keys(this.getBouestiStructure)
@@ -101,15 +112,17 @@ export default {
             isPwd: true,
             isLoading: false,
             step: 1,
+            staffStatus: 'Academic',
+            staffStatusOptions: ['Academic', 'Non-Academic'],
             title: '',
-            titleOptions: ['Mr','Mrs', 'Dr', 'Prof'],
+            titleOptions: [],
             surname: '',
             othername: '',
             email: '',
             password: '',
             phone: '',
             designation: '',
-            designationOptions: ['Operator 1', 'Operator 2', 'Admin'],
+            designationOptions: [],
             college: '',
             school: '',
             schoolOptions: [],
@@ -118,6 +131,9 @@ export default {
         }
     },
     mounted() {
+        const _ = this
+        _.titleOptions = _.getBouestiStaffTitle
+        _.designationOptions = _.getBouestiStaffDesignation
     },
     methods: {
         register () {
@@ -127,12 +143,25 @@ export default {
                 !_.title.trim().length ||
                 !_.surname.trim().length ||
                 !_.othername.trim().length ||
-                !_.phone.trim().length ||
-                !_.designation.trim().length ||
+                !_.phone.trim().length 
+                // Start from here...
+               /* || !_.designation.trim().length ||
                 !_.college.trim().length ||
                 !_.school.trim().length ||
-                !_.department.trim().length ) {
+                !_.department.trim().length */ ) {
                 _.notifyAlert('negative', 'mdi-information', 'Please Complete Fields', 'bottom')
+                return
+            }
+            // This checks if the staff is Academic
+            if (_.staffStatus == "Academic") { 
+                if( !_.college.trim().length || !_.school.trim().length || !_.department.trim().length) {
+                    console.log(_.staffStatus)
+                    _.notifyAlert('negative', 'mdi-information', 'Please Complete Academic Fields', 'bottom')
+                    return
+                }
+                // This checks if the staff is Non-Academic
+            } else if( !_.designation.trim().length) {
+                _.notifyAlert('negative', 'mdi-information', 'Please Complete Non-Academic Fields', 'bottom')
                 return
             }
             _.isLoading = true
@@ -148,10 +177,12 @@ export default {
                     email: _.email,
                     phone: _.phone,
                     title: _.title,
-                    college: _.college,
-                    school: _.school,
-                    department: _.department,
-                    designation: _.designation,
+                    staffStatus: _.staffStatus,
+                    // The below OR statement is in case the staff is non academic, let them still have the college, school and department field
+                    college: _.college || '',
+                    school: _.school || '',
+                    department: _.department || '',
+                    designation: _.designation || '',
                     publications: [],
                     cvLink: '',
                     displayImage: ''
@@ -165,7 +196,8 @@ export default {
                 _.isLoading = false
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                _.notifyAlert('negative', 'mdi-alert', errorMessage, 'bottom')
+                console.log(errorMessage)
+                _.notifyAlert('negative', 'mdi-alert', 'Please password must be 6 characters and above', 'bottom')
             });
         },
         notifyAlert (type, icon, msg, position) {

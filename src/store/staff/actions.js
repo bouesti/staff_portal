@@ -2,6 +2,9 @@
 export function LOAD_BOUESTI_STRUCTURES ({commit}, payload) {
     commit('LOAD_BOUESTI_STRUCTURES', payload)
 }
+export function LOAD_BOUESTI_STAFF_TITLE ({commit}, payload) {
+    commit('LOAD_BOUESTI_STAFF_TITLE', payload)
+}
 export function STAFF_ACTION ({commit}, payload) {
     commit('STAFF_ACTION', payload)
 }

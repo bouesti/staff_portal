@@ -5,18 +5,19 @@ import { getFirestore } from 'firebase/firestore';
 // import { } from 'firebase/<service>';
 
 // TODO: Replace the following with your app's Firebase project configuration
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDu9n_FeVFNsnQjbp43qvy4byHo369N-18",
-  authDomain: "staff-portal-52c56.firebaseapp.com",
-  projectId: "staff-portal-52c56",
-  storageBucket: "staff-portal-52c56.appspot.com",
-  messagingSenderId: "456257010797",
-  appId: "1:456257010797:web:9242eac7debc0ef5fa9364",
-  measurementId: "G-51X3TG5KGH"
+  apiKey: process.env.apiKey,
+  authDomain: process.env.authDomain,
+  projectId: process.env.projectId,
+  storageBucket: process.env.storageBucket,
+  messagingSenderId: process.env.messagingSenderId,
+  appId: process.env.appId,
+  measurementId:process.env.measurementId
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-// const auth = getAuth(app);
+
 
 export default db

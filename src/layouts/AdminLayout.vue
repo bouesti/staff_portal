@@ -28,7 +28,7 @@ export default {
           });
           _.LOAD_BOUESTI_STRUCTURES(obj)
         });
-      }
+      },
     }
 }
 </script>

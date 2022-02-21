@@ -103,6 +103,8 @@ export default function () {
       //   displayImage: 'https://images.pexels.com/photos/7092613/pexels-photo-7092613.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
       // },
     ],
-    bouesti_structure: {}
+    bouesti_structure: {},
+    bouesti_staff_title: [],
+    bouesti_staff_designation: [],
   }
 }

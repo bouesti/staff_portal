@@ -2,6 +2,12 @@
 export function getBouestiStructure (state) {
     return state.bouesti_structure;
 }
+export function getBouestiStaffTitle (state) {
+    return state.bouesti_staff_title;
+}
+export function getBouestiStaffDesignation (state) {
+    return state.bouesti_staff_designation;
+}
 
 export function getUser (state) {
     return state.user;
