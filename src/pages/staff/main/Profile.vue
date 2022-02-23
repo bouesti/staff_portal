@@ -14,7 +14,8 @@
                                 <q-menu touch-position >
                                     <div class="row q-col-gutter-md q-pa-sm">
                                         <div class="col-12">
-                                            <q-file v-model="displayImage" label="Select Image" filled clearable counter accept="image/*" />
+                                            <!-- <q-file v-model="displayImage" label="Select Image" filled clearable counter accept="image/*" /> -->
+                                            <q-file v-model="fileSelector" label="Select Image" filled clearable counter accept="image/*" hint="Must be less than 1 MB" />
                                         </div>
                                         <div class="col-12 text-center">
                                             <q-btn v-close-popup no-caps rounded color="primary" label="Upload" style="width: 80%;" @click="updateDP()" />
@@ -133,6 +134,7 @@ export default {
             college: '',
             school: '',
             department: '',
+            fileSelector: null,
             displayImage: null,
             edit_surname: '',
             edit_otherNames: '',
@@ -196,6 +198,15 @@ export default {
         },
         updateDP () {
             const _ = this
+            if (!_.fileSelector) {
+                _.notifyAlert('negative', 'mdi-information', 'Please Select an Image', 'bottom')
+                return;
+            }
+            const fileSize = _.fileSelector.size / 1024 / 1024
+            if (fileSize >= 1) {
+                _.notifyAlert('negative', 'mdi-information', 'File must be less than 1 MB', 'bottom')
+                return
+            }
             // Here the file will be sent to firebase storage, then the link will be used to update the staff displayImage
             // 
             Loading.show({
@@ -219,7 +230,7 @@ export default {
             const metadata = {
                 contentType: 'image/jpeg'
             };
-            const uploadTask = uploadBytesResumable(spaceRef, _.displayImage, metadata);
+            const uploadTask = uploadBytesResumable(spaceRef, _.fileSelector, metadata);
             // Listen for state changes, errors, and completion of the upload.
             uploadTask.on('state_changed',
             (snapshot) => {
@@ -305,7 +316,7 @@ export default {
                 var values = Object.values(_.getBouestiStructure[_.edit_college][val])
                 _.edit_departmentOptions = values
             }
-        },
+        }
     }
 }
 </script>

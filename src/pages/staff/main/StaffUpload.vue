@@ -125,7 +125,7 @@
                                     <q-input type="textarea" filled v-model="pub.abstract" color="primary" label="Abstract" />
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <q-file v-model="files" label="Header Image" filled counter clearable accept="image/*" >
+                                    <q-file v-model="files" label="Header Image" filled counter clearable accept="image/*" hint="Must be less than 1 MB" >
                                         <template v-slot:prepend>
                                             <q-icon name="attach_file" />
                                         </template>
@@ -218,6 +218,11 @@ export default {
                 // You will first upload the image to storageBucket, generate the url, and load it here 
                 ) {
                 _.notifyAlert('negative', 'mdi-information', 'Please Complete Fields', 'bottom')
+                return
+            }
+            const fileSize = _.files.size / 1024 / 1024
+            if (fileSize >= 1) {
+                _.notifyAlert('negative', 'mdi-information', 'Header image must be less than 1 MB', 'bottom')
                 return
             }
             _.isLoadingPub = true

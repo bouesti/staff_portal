@@ -37,7 +37,7 @@
                     <div class="col-xs-12 col-sm-6 col-md-4" v-for="pub in sortPublications" :key="pub.id">
                             <q-card class="my-card">
                                 <a :href="pub.pubLink" :title="pub.title" target="_blank" nofollow>
-                                    <img :src="pub.image" height="300">
+                                    <img :src="pub.image" height="300" style="width: 100%;">
                                 </a>
                                 <div class="delete_btn">
                                     <q-btn round outline no-caps color="red" icon="mdi-delete" @click="delete_Publication(pub.id)" />

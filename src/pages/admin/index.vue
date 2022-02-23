@@ -132,14 +132,12 @@ export default {
             var keys =  Object.keys(_.getBouestiStructure)
             return keys
         },
-        filteredStaff () {
+       /*  filteredStaff () {
             const _ = this
             let staffArr = []
             if (_.allStaff) {
                 staffArr = []
-                // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 _.selectedCollege = _.selectedSchool =_.selectedDepartment = ''
-                // staffArr = _.getStaff
                 staffArr = _.getStaff.filter((staff) => staff.staffStatus == _.currentStaffMode)
             }
             if (_.selectedCollege.length) {
@@ -155,6 +153,32 @@ export default {
                 staffArr = []
                 staffArr = _.getStaff
                 staffArr = _.getStaff.filter((staff) => staff.designation == _.selectedDesignation)
+            }
+            return staffArr.filter((staff) => staff.surname.toLowerCase().match(_.search_input.trim().toLowerCase()) ||  staff.otherNames.toLowerCase().match(_.search_input.trim().toLowerCase()))
+        }, */
+        filteredStaff () {
+            const _ = this
+            let staffArr = []
+            if (_.allStaff) {
+                staffArr = []
+                // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                _.selectedCollege = _.selectedSchool =_.selectedDepartment = ''
+                // staffArr = _.getStaff
+                staffArr = _.getStaff.filter((staff) => staff.staffStatus == _.currentStaffMode)
+            }
+            if (_.selectedCollege.length) {
+                staffArr = _.getStaff.filter((staff) => staff.college == _.selectedCollege && staff.staffStatus == 'Academic')
+            }
+            if (_.selectedSchool.length) {
+                staffArr = _.getStaff.filter((staff) => staff.college == _.selectedCollege && staff.school == _.selectedSchool && staff.staffStatus == 'Academic')
+            }
+            if (_.selectedDepartment.length) {
+                staffArr = _.getStaff.filter((staff) => staff.college == _.selectedCollege && staff.school == _.selectedSchool && staff.department == _.selectedDepartment && staff.staffStatus == 'Academic')
+            }
+            if (_.selectedDesignation.length) {
+                staffArr = []
+                staffArr = _.getStaff
+                staffArr = _.getStaff.filter((staff) => staff.designation == _.selectedDesignation && staff.staffStatus == 'Non-Academic')
             }
             return staffArr.filter((staff) => staff.surname.toLowerCase().match(_.search_input.trim().toLowerCase()) ||  staff.otherNames.toLowerCase().match(_.search_input.trim().toLowerCase()))
         }
