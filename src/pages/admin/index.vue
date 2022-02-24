@@ -81,7 +81,7 @@
          -->
         <div class="row q-col-gutter-lg q-px-lg q-mt-lg">
             <div v-if="!filteredStaff.length" class="col-12 text-center text-bold text-grey text-h4"> Sorry, No Record Found. </div>
-            <div v-else class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="staff in filteredStaff" :key="staff.id">
+            <div v-else class="col-12 col-sm-6 col-md-3" v-for="staff in filteredStaff" :key="staff.id">
                 <q-card class="staff_card">
                     <img v-if="staff.displayImage ? staff.displayImage.length : false" :src="staff.displayImage" height="200" style="width: 100%;">
                     <img v-else src="~assets/logo.png" alt="Bouesti Logo" height="200" style="width: 100%;" />
@@ -121,10 +121,11 @@
 
 <style scoped>
     .staff_card{
-        width: 250px;
+        /* width: 250px; */
+        width: 100%;
     }
     .q-item.q-item-type.row.no-wrap{
-        padding: 0px;
+        padding: 0px 10px;
     }
     .q-card__actions.justify-center.q-card__actions--horiz.row {
         padding: 5px 0px;
