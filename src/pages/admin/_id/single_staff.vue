@@ -57,8 +57,54 @@
                     </div>
                 </q-card-section>
             </q-card>
+            <q-separator spaced="40px" />
             <div class="q-my-md"></div>
-            <q-card>
+
+            <div class="row q-px-md q-col-gutter-lg">
+                <div class="col-12 col-sm-6">
+                    <q-card>
+                        <q-card-section v-if="!currentStaff.cvLink.length">
+                            <div class="text-center">
+                                <div>
+                                    <img src="~assets/img/cv.png" :style="$q.screen.lt.sm ? 'width: 100%;' :'width: 50%;'" />
+                                    <div class="text-grey text-h6 q-mb-sm"> {{ currentStaff.title }} {{ currentStaff.surname }} has not uploaded Cv yet. </div>
+                                </div>
+                            </div>
+                        </q-card-section>
+                        <q-card-section v-else>
+                            <div class="text-grey text-h5 q-mb-md"> Download {{ currentStaff.title }} {{ currentStaff.surname }}'s Cv </div>
+                            <div>
+                                <a :href="currentStaff.cvLink" no-opener type="download" >
+                                    <q-btn  no-caps rounded color="primary" icon="mdi-cloud-download-outline" label="Download Cv" />
+                                </a>
+                            </div>
+                        </q-card-section>
+                    </q-card>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <q-card>
+                        <q-card-section v-if="!currentStaff.pubLink.length">
+                            <div class="text-center">
+                                <div>
+                                    <img src="~assets/img/author.png" :style="$q.screen.lt.sm ? 'width: 100%;' :'width: 50%;'" />
+                                    <div class="text-grey text-h6 q-mb-sm"> {{ currentStaff.title }} {{ currentStaff.surname }} has not uploaded Publication Link yet. </div>
+                                </div>
+                            </div>
+                        </q-card-section>
+                        <q-card-section v-else>
+                            <div class="text-grey text-h5 q-mb-md"> Visit {{ currentStaff.title }} {{ currentStaff.surname }}'s Google Scholar </div>
+                            <div>
+                                <a :href="currentStaff.pubLink" no-opener target="_blank" >
+                                    <q-btn  no-caps rounded color="primary" icon="mdi-google" label="Visit Google Scholar" />
+                                </a>
+                            </div>
+                        </q-card-section>
+                    </q-card>
+                </div>
+            </div>
+            <!--  -->
+            <div class="q-my-md"></div>
+            <!-- <q-card>
                 <q-card-section v-if="!currentStaff.cvLink.length">
                     <div class="text-center">
                         <div>
@@ -75,14 +121,13 @@
                         </a>
                     </div>
                 </q-card-section>
-            </q-card>
+            </q-card> -->
             <div class="q-my-md"></div>
-            <q-card>
+            <!-- <q-card>
                 <q-card-section>
                     <div class="text-grey text-h4 q-mb-md"> Publications </div>
                 </q-card-section>
                 <q-card-section>
-                    <!-- <div v-if="!currentStaff.publications.length" class="text-center"> -->
                     <div v-if="!currentStaff.publications.length" class="text-center">
                         <div>
                             <img src="~assets/img/author.png" :style="$q.screen.lt.sm ? 'width: 100%;' :'width: 50%;'"  />
@@ -91,7 +136,6 @@
                     </div>
                     <div v-else class="row q-col-gutter-lg q-mt-sm">
                         <div class="col-xs-12 col-sm-6 col-md-4" v-for="pub in currentStaff.publications" :key="pub.id">
-                            <!-- When this is clicked , it should take the user to the website where it was published... -->
                             <a :href="pub.pubLink" :title="pub.title" target="_blank" nofollow>
                                 <q-card class="my-card" v-ripple>
                                     <img :src="pub.image" height="250">
@@ -124,7 +168,7 @@
                         </div>
                     </div>
                 </q-card-section>
-            </q-card>
+            </q-card> -->
         </div>
     </q-page>
 </template>
@@ -159,6 +203,7 @@ export default {
                 school: '',
                 department: '',
                 cvLink: '',
+                pubLink: '',
                 publications: []
             }
         }

@@ -185,6 +185,7 @@ export default {
                     designation: _.designation || '',
                     publications: [],
                     cvLink: '',
+                    pubLink: '',
                     displayImage: ''
                     })
             }).then((res) => {

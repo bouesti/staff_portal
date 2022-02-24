@@ -1,26 +1,53 @@
 <template>
     <q-page padding>
-        <q-card>
-            <q-card-section>
-                <div>
-                    <div class="text-grey" :class="$q.screen.lt.sm ? 'text-h5': 'text-h3'"> Curriculum Vitae (CV) </div>
-                </div>
-                <div v-if="!getUser.cvLink.length" class="text-center">
-                    <div>
-                        <img src="~assets/img/cv.png" />
-                        <div class="text-grey text-h6 q-mb-sm"> Please upload you Curriculum Vitae </div>
-                        <q-btn no-caps flat rounded color="primary" label="click here to start" @click="$router.push({name: 'StaffUpload'})" />
-                    </div>
-                </div>
-                <div v-else class="q-py-md">
-                    <a :href="getUser.cvLink" no-opener type="download" >
-                        <q-btn  no-caps rounded color="primary" icon="mdi-cloud-download-outline" label="Download Cv" />
-                    </a>
-                </div>
-            </q-card-section>
-        </q-card>
+        <div class="row q-px-md q-col-gutter-lg">
+            <div class="col-12 col-sm-6">
+                <q-card>
+                    <q-card-section>
+                        <div>
+                            <div class="text-grey" :class="$q.screen.lt.sm ? 'text-h3': 'text-h4'"> Curriculum Vitae</div>
+                        </div>
+                        <div v-if="!getUser.cvLink.length" class="text-center">
+                            <div>
+                                <img src="~assets/img/cv.png" />
+                                <div class="text-grey text-h6 q-mb-sm"> Please upload your Curriculum Vitae </div>
+                                <q-btn no-caps flat rounded color="primary" label="click here to start" @click="$router.push({name: 'StaffUpload'})" />
+                            </div>
+                        </div>
+                        <div v-else class="q-py-md">
+                            <a :href="getUser.cvLink" no-opener type="download" >
+                                <q-btn  no-caps rounded color="primary" icon="mdi-cloud-download-outline" label="Download Cv" />
+                            </a>
+                        </div>
+                    </q-card-section>
+                </q-card>
+            </div>
+            <div class="col-12 col-sm-6">
+                <q-card>
+                    <q-card-section>
+                        <div>
+                            <div class="text-grey" :class="$q.screen.lt.sm ? 'text-h3': 'text-h4'"> Publication Link </div>
+                        </div>
+                        <div v-if="!getUser.pubLink.length" class="text-center">
+                            <div>
+                                <img src="~assets/img/cv.png" />
+                                <div class="text-grey text-h6 q-mb-sm"> Please upload your Publication Link </div>
+                                <q-btn no-caps flat rounded color="primary" label="click here to start" @click="$router.push({name: 'StaffUpload'})" />
+                            </div>
+                        </div>
+                        <div v-else class="q-py-md">
+                            <a :href="getUser.pubLink" no-opener target="_blank" >
+                                <q-btn  no-caps rounded color="primary" icon="mdi-google" label="Visit Google Scholar" />
+                            </a>
+                        </div>
+                    </q-card-section>
+                </q-card>
+            </div>
+        </div>
+
+        <!--  -->
         <q-separator spaced="40px" />
-        <q-card>
+        <!-- <q-card>
             <q-card-section>
                 <div class="flex justify-between">
                     <div class="text-grey" :class="$q.screen.lt.sm ? 'text-h5': 'text-h3' "> Publications </div>
@@ -69,7 +96,7 @@
                     </div>
                 </div>
             </q-card-section>
-        </q-card>
+        </q-card> -->
     </q-page>
 </template>
 
@@ -89,18 +116,18 @@ export default {
     computed: {
         ...mapGetters('staff', ['getUser']),
         // Run a sort algo here to get just few pieces of the user's publications
-        sortPublications () {
-            const _ = this
-            let arr = []
-            if (_.seeMorePublications) {
-                arr = _.getUser['publications']
-            } else {
-                arr =  _.getUser['publications'].filter((pub, index) => {
-                    return index < 6
-                })
-            }
-            return arr
-        }
+        // sortPublications () {
+        //     const _ = this
+        //     let arr = []
+        //     if (_.seeMorePublications) {
+        //         arr = _.getUser['publications']
+        //     } else {
+        //         arr =  _.getUser['publications'].filter((pub, index) => {
+        //             return index < 6
+        //         })
+        //     }
+        //     return arr
+        // }
     },
     data () {
         return {

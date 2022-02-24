@@ -21,6 +21,12 @@ export function ADD_CV_LINK (state, payload) {
     state.user = stateUser
 }
 
+export function ADD_PUB_LINK (state, payload) {
+    let stateUser = state.user
+    stateUser.pubLink = payload
+    state.user = stateUser
+}
+
 export function ADD_CV_PUBLICATION (state, payload) {
     let stateUser = state.user
     stateUser.publications.push(payload)

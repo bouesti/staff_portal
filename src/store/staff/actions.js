@@ -16,6 +16,10 @@ export function LOAD_CURRENT_USER ({commit}, payload) {
 export function ADD_CV_LINK ({commit}, payload) {
     commit('ADD_CV_LINK', payload)
 }
+export function ADD_PUB_LINK ({commit}, payload) {
+    commit('ADD_PUB_LINK', payload)
+}
+
 export function ADD_CV_PUBLICATION ({commit}, payload) {
     commit('ADD_CV_PUBLICATION', payload)
 }

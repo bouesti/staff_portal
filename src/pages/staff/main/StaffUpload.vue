@@ -4,24 +4,100 @@
             <q-card-section>
                 <div> 
                     <span class="text-h2 text-bold"> Hello {{ getUser.surname }} </span>,
-                    <div class="text-h6 text-grey q-my-lg">
-                        Welcome to BOUESTI Document upload, <br />
+                    <div class="text-h6 text-grey q-my-lg" style="width: 600px; max-width: 100%;">
+                        Welcome to BOUESTI Document upload,
                         please read the below instructions on how to format your document before uploading the details.
                         Thanks
                     </div>
                 </div>
             </q-card-section>
         </q-card>
+        <q-separator spaced="40px" />
+        <div class="row q-px-md q-col-gutter-lg">
+            <div class="col-12 col-sm-6">
+                <q-card class="q-pb-lg">
+                        <q-card-section>
+                            <div class="text-h5 text-grey text-bold"> Curriculum Vitae </div>
+                        </q-card-section>
+                        <q-card-section>
+                            <div>
+                                <q-list bordered separator>
+                                    <q-item clickable v-ripple>
+                                        <q-item-section>
+                                            <q-item-label> Link to your Google Drive </q-item-label>
+                                            <q-item-label caption>
+                                                For efficiency purpose, please upload file to your Google Drive, and paste link the url here.
+                                            </q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </div>
+                        </q-card-section>
+                        <q-card-section>
+                            <div class="row q-col-gutter-md">
+                                <div class="col-12">
+                                    <q-input filled v-model="newUploadCvLink" color="primary" label="Link to Resource" />
+                                </div>
+                                <div class="col-12 text-center">
+                                    <q-btn no-caps color="primary" style="width: 70%" :loading="isLoadingNewCv" @click="uploadNewCv">
+                                        <template #loading>
+                                            <q-spinner-ball />
+                                        </template>
+                                        Upload Cv
+                                    </q-btn>
+                                </div>
+                            </div>
+                        </q-card-section>
+                    </q-card>
+            </div>
+            <div class="col-12 col-sm-6">
+                <q-card class="q-pb-lg">
+                        <q-card-section>
+                            <div class="text-h5 text-grey text-bold"> Publication Link </div>
+                        </q-card-section>
+                        <q-card-section>
+                            <div>
+                                <q-list bordered separator>
+                                    <q-item clickable v-ripple>
+                                        <q-item-section>
+                                            <q-item-label> Link to your Google Scholar Account </q-item-label>
+                                            <q-item-label caption>
+                                                For efficiency purpose, please upload publications to your Google Scholar, and paste link the url here.
+                                            </q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </div>
+                        </q-card-section>
+                        <q-card-section>
+                            <div class="row q-col-gutter-md">
+                                <div class="col-12">
+                                    <q-input filled v-model="newUploadPubLink" color="primary" label="Link to Google Scholar" />
+                                </div>
+                                <div class="col-12 text-center">
+                                    <q-btn no-caps color="primary" style="width: 70%" :loading="isLoadingNewPub" @click="uploadNewPub">
+                                        <template #loading>
+                                            <q-spinner-ball />
+                                        </template>
+                                        Upload Publication Link
+                                    </q-btn>
+                                </div>
+                            </div>
+                        </q-card-section>
+                    </q-card>
+            </div>
+        </div>
+        <!--  -->
         <div class="q-my-lg"> </div>
-        <div class="row q-col-gutter-md q-ml-md q-my-md">
+        <!-- <div class="row q-col-gutter-md q-ml-md q-my-md">
             <div class="">
                 <q-btn no-caps rounded :outline="currentDoc != 'cv'" color="primary" label="Curriculum Vitae" @click="switchDoc('cv')" />
             </div>
             <div class="">
                 <q-btn no-caps rounded :outline="currentDoc != 'pub'" color="primary" label="Publication" @click="switchDoc('pub')" />
             </div>
-        </div>
-        <div>
+        </div> -->
+        <!-- <div>
             <div class="row q-col-gutter-lg">
                 <div v-if="currentDoc == 'cv'" class="col-12 col-md-8">
                     <q-card class="q-pb-lg">
@@ -43,7 +119,7 @@
                                         <q-item-section>
                                             <q-item-label> Link to your Google Drive </q-item-label>
                                             <q-item-label caption>
-                                                For efficiency purpose, please upload file to your Googlde Drive, and then link the url.
+                                                For efficiency purpose, please upload file to your Google Drive, and then paste the url here.
                                             </q-item-label>
                                         </q-item-section>
                                     </q-item>
@@ -148,7 +224,7 @@
                     </q-card>
                 </div>
             </div>
-        </div>
+        </div> -->
     </q-page>
 </template>
 
@@ -180,32 +256,35 @@ export default {
             },
             files: null,
             isLoadingPub: false,
+            // Updates starts here, above data will be preserved just in case
+            newUploadCvLink: '',
+            newUploadPubLink: '',
+            isLoadingNewCv: false,
+            isLoadingNewPub: false,
         }
     },
     methods: {
-        ...mapActions('staff', ['ADD_CV_LINK', 'ADD_CV_PUBLICATION']),
-        uploadCv () {
-            const _ = this
-            const { fileFormat, fileLink } = _.cv
-            if(!fileFormat.trim().length || !fileLink.trim().length) {
-                _.notifyAlert('negative', 'mdi-information', 'Please Complete Fields', 'bottom')
-                return
-            }
-            _.isLoadingCv = true
-            const userRef = doc(db, "allStaff", _.getUser.id);
+        ...mapActions('staff', ['ADD_CV_LINK', 'ADD_PUB_LINK', 'ADD_CV_PUBLICATION']),
+        // uploadCv () {
+        //     const _ = this
+        //     const { fileFormat, fileLink } = _.cv
+        //     if(!fileFormat.trim().length || !fileLink.trim().length) {
+        //         _.notifyAlert('negative', 'mdi-information', 'Please Complete Fields', 'bottom')
+        //         return
+        //     }
+        //     _.isLoadingCv = true
+        //     const userRef = doc(db, "allStaff", _.getUser.id);
 
-            // Set the "cvLink" field of the city 'user uid'
-            updateDoc(userRef, {
-                cvLink: fileLink
-            })
-            // The snapshot on the login page will update everything
-            setTimeout(() => {
-                _.ADD_CV_LINK(fileLink)
-                _.isLoadingCv = false
-                _.$router.push({name: 'Dashboard'})
-            }, 5000)
-        },
-        uploadPub () {
+        //     updateDoc(userRef, {
+        //         cvLink: fileLink
+        //     })
+        //     setTimeout(() => {
+        //         _.ADD_CV_LINK(fileLink)
+        //         _.isLoadingCv = false
+        //         _.$router.push({name: 'Dashboard'})
+        //     }, 5000)
+        // },
+        /* uploadPub () {
             const _ = this
             const publicationID = uid();
             const author = _.getUser.surname + ' ' + _.getUser.otherNames
@@ -215,7 +294,6 @@ export default {
                 !fileLink.trim().length ||
                 !abstract.trim().length ||
                 !_.files
-                // You will first upload the image to storageBucket, generate the url, and load it here 
                 ) {
                 _.notifyAlert('negative', 'mdi-information', 'Please Complete Fields', 'bottom')
                 return
@@ -228,27 +306,26 @@ export default {
             _.isLoadingPub = true
             const storage = getStorage();
 
-            // Points to the root reference
+            Points to the root reference
             const storageRef = ref(storage);
 
-            // Points to 'images'
+            Points to 'images'
             const imagesRef = ref(storageRef, 'staffPublications');
 
-            // Points to 'staffPublications/<publication uid>.jpg'
-            // Creating the filename using the current publication's UID.
+            Points to 'staffPublications/<publication uid>.jpg'
+            Creating the filename using the current publication's UID.
             const fileName = `${publicationID}.jpg`;
             const spaceRef = ref(imagesRef, fileName);
-            // 'file' comes from the Blob or File API
-            // Create the file metadata
-            /** @type {any} */
+            'file' comes from the Blob or File API
+            Create the file metadata
             const metadata = {
                 contentType: 'image/jpeg'
             };
             const uploadTask = uploadBytesResumable(spaceRef, _.files, metadata);
-            // Listen for state changes, errors, and completion of the upload.
+            Listen for state changes, errors, and completion of the upload.
             uploadTask.on('state_changed',
             (snapshot) => {
-                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log('Upload is ' + progress + '% done');
                 switch (snapshot.state) {
@@ -261,16 +338,16 @@ export default {
                 }
             }, 
             (error) => {
-                // A full list of error codes is available at
-                // https://firebase.google.com/docs/storage/web/handle-errors
+                A full list of error codes is available at
+                https://firebase.google.com/docs/storage/web/handle-errors
                 switch (error.code) {
                     case 'storage/unauthorized':
-                        // User doesn't have permission to access the object
+                        User doesn't have permission to access the object
                         _.notifyAlert('negative', 'mdi-information', 'You do not have permission to access this storage', 'bottom')
                          _.isLoadingPub = false
                         break;
                     case 'storage/canceled':
-                        // User canceled the upload
+                        User canceled the upload
                         _.notifyAlert('negative', 'mdi-information', 'You cancelled the upload', 'bottom')
                         _.isLoadingPub = false
                        break;
@@ -278,7 +355,7 @@ export default {
                     // ...
 
                     case 'storage/unknown':
-                        // Unknown error occurred, inspect error.serverResponse
+                        Unknown error occurred, inspect error.serverResponse
                         _.notifyAlert('negative', 'mdi-information', 'Unknown error, please contact admin', 'bottom')
                          _.isLoadingPub = false
                         break;
@@ -287,7 +364,7 @@ export default {
                 }
             }, 
                 () => {
-                    // Upload completed successfully, now we can get the download URL
+                    Upload completed successfully, now we can get the download URL
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         const dataObj = {
                             id: publicationID,
@@ -301,9 +378,9 @@ export default {
                         const userRef = doc(db, "allStaff", _.getUser.id);
                         updateDoc(userRef, {
                             publications: arrayUnion(dataObj)
-                            // use arrayRemove("east_coast") to delete an obj
+                            use arrayRemove("east_coast") to delete an obj
                         })
-                        // The snapshot on the login page will update everything
+                        The snapshot on the login page will update everything
                         setTimeout(() => {
                             _.ADD_CV_PUBLICATION(dataObj)
                             _.isLoadingPub = false
@@ -312,6 +389,48 @@ export default {
                     });
                 }
             );
+        }, */
+        
+        async uploadNewCv () {
+            const _ = this;
+            if(!_.newUploadCvLink.trim().length) {
+                _.notifyAlert('negative', 'mdi-information', 'Please Complete Field', 'bottom')
+                return
+            }
+            _.isLoadingNewCv = true
+            try {
+                const userRef = doc(db, "allStaff", _.getUser.id);
+    
+                await updateDoc(userRef, {
+                    cvLink: _.newUploadCvLink
+                })
+                _.ADD_CV_LINK(_.newUploadCvLink)
+                _.isLoadingNewCv = false
+                _.$router.push({name: 'Dashboard'})
+            } catch (error) {
+                _.isLoadingNewPub = false
+                _.notifyAlert('negative', 'mdi-information', 'Please Contact Admin', 'bottom')
+            }
+        },
+        async uploadNewPub () {
+             const _ = this;
+            if(!_.newUploadPubLink.trim().length) {
+                _.notifyAlert('negative', 'mdi-information', 'Please Complete Field', 'bottom')
+                return
+            }
+            _.isLoadingNewPub = true
+            try {
+                const userRef = doc(db, "allStaff", _.getUser.id);
+                await updateDoc(userRef, {
+                    pubLink: _.newUploadPubLink
+                })
+                _.ADD_PUB_LINK(_.newUploadPubLink)
+                _.isLoadingNewPub = false
+                _.$router.push({name: 'Dashboard'})
+            } catch (error) {
+                _.isLoadingNewPub = false
+                _.notifyAlert('negative', 'mdi-information', 'Please Contact Admin', 'bottom')
+            }
         },
         switchDoc (val) {
             const _ = this
