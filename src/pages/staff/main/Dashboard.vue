@@ -9,7 +9,7 @@
                         </div>
                         <div v-if="!getUser.cvLink.length" class="text-center">
                             <div>
-                                <img src="~assets/img/cv.png" />
+                                <img src="~assets/img/cv.png" style="width: 100%;" />
                                 <div class="text-grey text-h6 q-mb-sm"> Please upload your Curriculum Vitae </div>
                                 <q-btn no-caps flat rounded color="primary" label="click here to start" @click="$router.push({name: 'StaffUpload'})" />
                             </div>
@@ -30,7 +30,7 @@
                         </div>
                         <div v-if="!getUser.pubLink.length" class="text-center">
                             <div>
-                                <img src="~assets/img/cv.png" />
+                                <img src="~assets/img/author.png" style="width: 100%;" />
                                 <div class="text-grey text-h6 q-mb-sm"> Please upload your Publication Link </div>
                                 <q-btn no-caps flat rounded color="primary" label="click here to start" @click="$router.push({name: 'StaffUpload'})" />
                             </div>

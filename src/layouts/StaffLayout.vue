@@ -73,7 +73,7 @@
           </q-list>
         </q-scroll-area>
 
-        <q-img class="absolute-top" src="~assets/img/bg.jpg" style="height: 150px">
+        <q-img class="absolute-top" src="~assets/img/bg.jpg" style="height: 165px">
           <div class="absolute-bottom bg-transparent text-primary text-center">
             <q-avatar size="80px" class="q-mb-sm">
               <img :src="getDp" />

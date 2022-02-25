@@ -16,7 +16,7 @@
                         </template>
                     </q-input>
                     <div>
-                        <q-btn no-caps flat rounded class="text-primary"> Forgot password? </q-btn>
+                        <q-btn no-caps flat rounded class="text-primary" @click="$router.push({name: 'Staff_forgot_password'})"> Forgot password? </q-btn>
                     </div>
                     <div class="text-center" style="width: 100%">
                         <q-btn no-caps color="primary" style="width: 70%" :loading="isLoading" @click="login()">

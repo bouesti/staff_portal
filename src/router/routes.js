@@ -12,7 +12,9 @@ const routes = [
     component: () => import('layouts/bareLayout.vue'),
     children: [
       { path: 'Staff_Login', component: () => import('pages/staff/Index.vue'), name: 'Staff_auth' },
-      { path: 'Staff_Signup', component: () => import('pages/staff/auth/Signup.vue'), name: 'Staff_signup' }
+      { path: 'Staff_Signup', component: () => import('pages/staff/auth/Signup.vue'), name: 'Staff_signup' },
+      { path: 'Forgot_Password', component: () => import('pages/staff/auth/Forgot_password.vue'), name: 'Staff_forgot_password' },
+      { path: 'Reset_Password', component: () => import('pages/staff/auth/Reset_password.vue'), name: 'Staff_reset_password' },
     ]
   },
   {
