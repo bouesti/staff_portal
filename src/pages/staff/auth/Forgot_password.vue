@@ -19,7 +19,6 @@
                     </div>
                     <div class="q-mt-lg text-center text-grey">
                         Don't have an Account?
-                        <q-btn no-caps flat rounded color="primary" @click="$router.push({name: 'Staff_reset_password'})"> Reset Password </q-btn>
                         <q-btn no-caps flat rounded color="primary" @click="$router.push({name: 'Staff_signup'})"> Register </q-btn>
                     </div>
                 </div>
@@ -52,7 +51,7 @@ export default {
             .then(() => {
                 // Password reset email sent!
                 _.isLoading = false
-                _.notifyAlert('positive', 'mdi-information', `A reset mail has been sent to ${_.email}.` , 'bottom')
+                _.notifyAlert('info', 'mdi-information', `A reset mail has been sent to ${_.email}` , 'bottom')
                 _.$router.push({name: 'Staff_auth'})
             })
             .catch((error) => {
