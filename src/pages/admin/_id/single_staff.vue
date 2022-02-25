@@ -74,8 +74,8 @@
                         <q-card-section v-else>
                             <div class="text-grey text-h5 q-mb-md"> Download {{ currentStaff.title }} {{ currentStaff.surname }}'s Cv </div>
                             <div>
-                                <a :href="currentStaff.cvLink" no-opener type="download" >
-                                    <q-btn  no-caps rounded color="primary" icon="mdi-cloud-download-outline" label="Download Cv" />
+                                <a :href="currentStaff.cvLink" no-opener target="_blank" >
+                                    <q-btn  no-caps rounded color="primary" icon="mdi-file" label="View Cv" />
                                 </a>
                             </div>
                         </q-card-section>
@@ -116,7 +116,7 @@
                 <q-card-section v-else>
                     <div class="text-grey text-h4 q-mb-md"> Download {{ currentStaff.title }} {{ currentStaff.surname }}'s Cv </div>
                     <div>
-                        <a :href="currentStaff.cvLink" no-opener type="download" >
+                        <a :href="currentStaff.cvLink" no-opener target="_blank" >
                             <q-btn  no-caps rounded color="primary" icon="mdi-cloud-download-outline" label="Download Cv" />
                         </a>
                     </div>

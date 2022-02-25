@@ -15,8 +15,8 @@
                             </div>
                         </div>
                         <div v-else class="q-py-md">
-                            <a :href="getUser.cvLink" no-opener type="download" >
-                                <q-btn  no-caps rounded color="primary" icon="mdi-cloud-download-outline" label="Download Cv" />
+                            <a :href="getUser.cvLink" no-opener target="_blank" >
+                                <q-btn  no-caps rounded color="primary" icon="mdi-file" label="View Cv" />
                             </a>
                         </div>
                     </q-card-section>
