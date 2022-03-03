@@ -41,7 +41,7 @@
                         <q-input color="primary" type="tel" filled v-model="phone" label="Phone Number" readonly />
                     </div>
                     <div class="col-12">
-                        <q-input filled v-model="designation" color="primary" label="Designation"  readonly />
+                        <q-input filled v-model="designation" color="primary" label="Status"  readonly />
                     </div>
                     <div class="col-12">
                         <q-input filled v-model="college" color="primary" label="College"  readonly />
@@ -81,7 +81,7 @@
                             <q-input color="primary" type="tel" filled v-model="edit_phone" label="Phone Number"/>
                         </div>
                         <div class="col-12">
-                            <q-select filled v-model="edit_designation" color="primary" :options="edit_designationOptions" label="Designation" />
+                            <q-select filled v-model="edit_designation" color="primary" :options="edit_designationOptions" label="Status" />
                         </div>
                         <div class="col-12">
                             <q-select filled v-model="edit_college" color="primary" :options="collegeOptions" label="College" />

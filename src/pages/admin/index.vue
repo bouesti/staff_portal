@@ -98,15 +98,14 @@
                                     <q-item-label lines="1" class="text-subtitle2 text-grey-8"> {{ staff.email }} </q-item-label>
                                 </q-item-section>
                             </q-item>
-                            <q-item>
+                            <!-- <q-item>
                                 <q-item-section>
-                                    <!-- <q-item-label overline> Designation | Department </q-item-label> -->
                                     <q-item-label overline> {{ staff.designation ? 'Designation' : 'Department' }} </q-item-label>
                                     <q-item-label lines="1" class="text-subtitle2 text-grey-8">
                                         {{ staff.designation ? staff.designation : staff.department }}
                                     </q-item-label>
                                 </q-item-section>
-                            </q-item>
+                            </q-item> -->
                         </q-list>
                     </q-card-section>
                     <q-separator />

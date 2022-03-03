@@ -41,7 +41,7 @@
                                     <q-separator />
                                     <q-item clickable v-ripple v-if="currentStaff.designation">
                                         <q-item-section>
-                                            <q-item-label overline> Designation </q-item-label>
+                                            <q-item-label overline> Status </q-item-label>
                                             <q-item-label> {{ currentStaff.designation }} </q-item-label>
                                         </q-item-section>
                                     </q-item>

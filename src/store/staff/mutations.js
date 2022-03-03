@@ -3,8 +3,10 @@ export function LOAD_BOUESTI_STRUCTURES (state, payload) {
     state.bouesti_structure = payload
 }
 export function LOAD_BOUESTI_STAFF_TITLE (state, payload) {
-    state.bouesti_staff_title = payload['title']
-    state.bouesti_staff_designation = payload['designation']
+    var staff_title = payload['title']
+   var staff_designation = payload['designation']
+    state.bouesti_staff_title = staff_title.sort()
+    state.bouesti_staff_designation = staff_designation.sort()
 }
 
 export function LOAD_CURRENT_USER (state, payload) {

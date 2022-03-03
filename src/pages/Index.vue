@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center bg-dark">
+  <q-page class="flex flex-center">
     <div>
       <img alt="Bouesti Official Logo" src="~assets/logo.png" style="width: 200px; height: 200px" >
       <div class="flex justify-center">

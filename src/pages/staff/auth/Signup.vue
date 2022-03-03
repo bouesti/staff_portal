@@ -61,7 +61,7 @@
                                 <q-slide-transition>
                                     <div class="col-12 q-col-gutter-md" v-show="staffStatus == 'Non-Academic'">
                                         <div class="col-12">
-                                            <q-select filled v-model="designation" color="primary" :options="designationOptions" label="Designation" />
+                                            <q-select filled v-model="designation" color="primary" :options="designationOptions" label="Status" />
                                         </div>
                                     </div>
                                 </q-slide-transition>
