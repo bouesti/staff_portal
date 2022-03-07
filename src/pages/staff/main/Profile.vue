@@ -43,13 +43,13 @@
                     <div class="col-12">
                         <q-input filled v-model="designation" color="primary" label="Status"  readonly />
                     </div>
-                    <div class="col-12">
+                    <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
                         <q-input filled v-model="college" color="primary" label="College"  readonly />
                     </div>
-                    <div class="col-12">
+                    <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
                         <q-input filled v-model="school" color="primary" label="School"  readonly />
                     </div>
-                    <div class="col-12">
+                    <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
                         <q-input filled v-model="department" color="primary" label="Department"  readonly />
                     </div>
                     <div class="col-12 text-center">
@@ -80,16 +80,16 @@
                         <div class="col-12 col-sm-6">
                             <q-input color="primary" type="tel" filled v-model="edit_phone" label="Phone Number"/>
                         </div>
-                        <div class="col-12">
+                        <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
                             <q-select filled v-model="edit_designation" color="primary" :options="edit_designationOptions" label="Status" />
                         </div>
-                        <div class="col-12">
+                        <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
                             <q-select filled v-model="edit_college" color="primary" :options="collegeOptions" label="College" />
                         </div>
-                        <div class="col-12">
+                        <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
                             <q-select filled v-model="edit_school" color="primary" :options="edit_schoolOptions" label="School" />
                         </div>
-                        <div class="col-12">
+                        <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
                             <q-select filled v-model="edit_department" color="primary" :options="edit_departmentOptions" label="Department" />
                         </div>
                         <div class="col-12 text-center">
@@ -125,6 +125,7 @@ export default {
     },
     data () {
         return {
+            staffStatus: '',
             editProfileModal: false,
             surname: '',
             otherNames: '',
@@ -151,7 +152,8 @@ export default {
     },
     mounted () {
         const _ = this
-        const { surname, otherNames, email, phone, title, college, school, department, designation, displayImage, } = _.getUser;
+        const { surname, otherNames, email, phone, title, college, school, department, designation, displayImage, staffStatus } = _.getUser;
+        _.staffStatus = staffStatus
         _.surname = surname
         _.otherNames = otherNames
         _.email = email
