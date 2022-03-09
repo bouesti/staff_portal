@@ -14,7 +14,13 @@
                         <div class="col-12 col-sm-8 col-md-6">
                             <div>
                                 <q-list bordered separator>
-                                    <q-item clickable v-ripple>
+                                    <q-item>
+                                        <q-item-section>
+                                            <q-item-label overline> Title </q-item-label>
+                                            <q-item-label> {{ currentStaff.title }} </q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+                                    <q-item>
                                         <q-item-section>
                                             <q-item-label overline> Full Name </q-item-label>
                                             <q-item-label> {{ currentStaff.surname + ' ' + currentStaff.otherNames }} </q-item-label>
@@ -39,13 +45,33 @@
                                         </q-item>
                                     </a>
                                     <q-separator />
-                                    <q-item clickable v-ripple v-if="currentStaff.designation">
+                                    <q-item >
                                         <q-item-section>
                                             <q-item-label overline> Status </q-item-label>
-                                            <q-item-label> {{ currentStaff.designation }} </q-item-label>
+                                            <q-item-label v-if="currentStaff.designation"> {{ currentStaff.designation }} </q-item-label>
+                                            <q-item-label v-else> {{ currentStaff.academicStatus }} </q-item-label>
                                         </q-item-section>
                                     </q-item>
-                                    <q-item clickable v-ripple v-else>
+                                    <q-separator />
+                                    <a :href="`https://orcid.org/${currentStaff.orcidNum}`" target="_blank" rel="noopener noreferrer" v-if="currentStaff.staffStatus.toLowerCase() == 'academic'">
+                                        <q-item clickable v-ripple>
+                                            <q-item-section>
+                                                <q-item-label overline> Orcid Number </q-item-label>
+                                                <q-item-label > {{ currentStaff.orcidNum }} </q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+                                    </a>
+                                    <q-separator />
+                                    <a v-if="currentStaff.website" :href="`${currentStaff.website}`" target="_blank" rel="noopener noreferrer">
+                                        <q-item clickable v-ripple>
+                                            <q-item-section>
+                                                <q-item-label overline> Personal Website </q-item-label>
+                                                <q-item-label> {{ currentStaff.website }} </q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+                                    </a>
+                                    <q-separator />
+                                    <q-item v-if="currentStaff.staffStatus.toLowerCase() == 'academic'">
                                         <q-item-section>
                                             <q-item-label overline> Institution Details </q-item-label>
                                             <q-item-label > {{ currentStaff.college }} | {{ currentStaff.school }} | {{ currentStaff.department }} </q-item-label>
@@ -102,73 +128,8 @@
                     </q-card>
                 </div>
             </div>
-            <!--  -->
             <div class="q-my-md"></div>
-            <!-- <q-card>
-                <q-card-section v-if="!currentStaff.cvLink.length">
-                    <div class="text-center">
-                        <div>
-                            <img src="~assets/img/cv.png" :style="$q.screen.lt.sm ? 'width: 100%;' :'width: 50%;'" />
-                            <div class="text-grey text-h6 q-mb-sm"> {{ currentStaff.title }} {{ currentStaff.surname }} has not uploaded Cv yet. </div>
-                        </div>
-                    </div>
-                </q-card-section>
-                <q-card-section v-else>
-                    <div class="text-grey text-h4 q-mb-md"> Download {{ currentStaff.title }} {{ currentStaff.surname }}'s Cv </div>
-                    <div>
-                        <a :href="currentStaff.cvLink" no-opener target="_blank" >
-                            <q-btn  no-caps rounded color="primary" icon="mdi-cloud-download-outline" label="Download Cv" />
-                        </a>
-                    </div>
-                </q-card-section>
-            </q-card> -->
             <div class="q-my-md"></div>
-            <!-- <q-card>
-                <q-card-section>
-                    <div class="text-grey text-h4 q-mb-md"> Publications </div>
-                </q-card-section>
-                <q-card-section>
-                    <div v-if="!currentStaff.publications.length" class="text-center">
-                        <div>
-                            <img src="~assets/img/author.png" :style="$q.screen.lt.sm ? 'width: 100%;' :'width: 50%;'"  />
-                            <div class="text-grey text-h6 q-mb-sm"> {{ currentStaff.title }}. {{ currentStaff.surname }} has no publications on this profile. </div>
-                        </div>
-                    </div>
-                    <div v-else class="row q-col-gutter-lg q-mt-sm">
-                        <div class="col-xs-12 col-sm-6 col-md-4" v-for="pub in currentStaff.publications" :key="pub.id">
-                            <a :href="pub.pubLink" :title="pub.title" target="_blank" nofollow>
-                                <q-card class="my-card" v-ripple>
-                                    <img :src="pub.image" height="250">
-
-                                    <q-card-section>
-                                         <q-list>
-                                            <q-item>
-                                                <q-item-section>
-                                                    <q-item-label lines="2" class="text-h6 text-bold text-grey">
-                                                        {{ pub.title }}
-                                                    </q-item-label>
-                                                </q-item-section>
-                                            </q-item>
-                                        </q-list>
-                                    </q-card-section>
-                                    <q-separator inset />
-                                    <q-card-section class="q-pt-none">
-                                        <q-list>
-                                            <q-item>
-                                                <q-item-section>
-                                                    <q-item-label lines="2">
-                                                        {{ pub.abstract }}
-                                                    </q-item-label>
-                                                </q-item-section>
-                                            </q-item>
-                                        </q-list>
-                                    </q-card-section>
-                                </q-card>
-                            </a>
-                        </div>
-                    </div>
-                </q-card-section>
-            </q-card> -->
         </div>
     </q-page>
 </template>
@@ -199,11 +160,15 @@ export default {
                 email: '',
                 phone: '',
                 designation: '',
+                academicStatus: '',
                 college: '',
                 school: '',
+                staffStatus: '',
                 department: '',
                 cvLink: '',
                 pubLink: '',
+                website: '',
+                orcidNum: '',
                 publications: []
             }
         }

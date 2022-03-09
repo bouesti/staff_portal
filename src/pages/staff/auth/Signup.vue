@@ -23,7 +23,7 @@
                                     <q-input color="primary" type="tel" filled v-model="phone" label="Phone Number"/>
                                 </div>
                                 <div class="col-12">
-                                    <q-input color="primary" :type="isPwd ? 'password' : 'text'" filled v-model="password" label="Password">
+                                    <q-input color="primary" :type="isPwd ? 'password' : 'text'" filled v-model="password" hint="Must be 6 characters or above" label="Password">
                                         <template #append>
                                             <q-btn flat round color="primary" :icon="isPwd ? 'mdi-eye-off' : 'mdi-eye'" @click="isPwd = !isPwd" />
                                         </template>
@@ -39,7 +39,7 @@
 
                     </q-step>
 
-                    <q-step :name="2" title="getBouestiStructure Data" caption="Official Data" icon="create_new_folder" :done="step > 2" >
+                    <q-step :name="2" title="Bouesti Structure Data" caption="Official Data" icon="create_new_folder" :done="step > 2" >
                         <div>
                             <div class="row q-col-gutter-md">
                                 <div class="col-12">
@@ -47,6 +47,9 @@
                                 </div>
                                 <q-slide-transition>
                                     <div class="col-12 q-col-gutter-md" v-show="staffStatus == 'Academic'">
+                                        <div class="col-12">
+                                            <q-select filled v-model="academicStatus" color="primary" :options="academicStatusOptions" label="Status" />
+                                        </div>
                                         <div class="col-12">
                                             <q-select filled v-model="college" color="primary" :options="collegeOptions" label="College" />
                                         </div>
@@ -100,7 +103,12 @@ import { mapGetters } from 'vuex';
 export default {
     name: 'Signup_page',
     computed: {
-        ...mapGetters('staff', ['getBouestiStructure', 'getBouestiStaffTitle', 'getBouestiStaffDesignation']),
+        ...mapGetters('staff', [
+            'getBouestiStructure',
+            'getBouestiStaffTitle',
+            'getBouestiStaffDesignation',
+            'getBouestiAcademicStatus',
+        ]),
         collegeOptions () {
             const _ = this
             var keys =  Object.keys(this.getBouestiStructure)
@@ -128,12 +136,18 @@ export default {
             schoolOptions: [],
             department: '',
             departmentOptions: [],
+            // Create the status for academic staff, orcid number and the personal website link
+            orcidNum: '',
+            website: '',
+            academicStatus:'',
+            academicStatusOptions: [],
         }
     },
     mounted() {
         const _ = this
         _.titleOptions = _.getBouestiStaffTitle
         _.designationOptions = _.getBouestiStaffDesignation
+        _.academicStatusOptions = _.getBouestiAcademicStatus
     },
     methods: {
         register () {
@@ -154,8 +168,7 @@ export default {
             }
             // This checks if the staff is Academic
             if (_.staffStatus == "Academic") { 
-                if( !_.college.trim().length || !_.school.trim().length || !_.department.trim().length) {
-                    console.log(_.staffStatus)
+                if( !_.college.trim().length || !_.school.trim().length || !_.department.trim().length || !_.academicStatus.trim().length) {
                     _.notifyAlert('negative', 'mdi-information', 'Please Complete Academic Fields', 'bottom')
                     return
                 }
@@ -186,7 +199,10 @@ export default {
                     publications: [],
                     cvLink: '',
                     pubLink: '',
-                    displayImage: ''
+                    displayImage: '',
+                    orcidNum: '',
+                    website: '',
+                    academicStatus: _.academicStatus,
                     })
             }).then((res) => {
                 _.isLoading = false

@@ -28,7 +28,10 @@
             </q-card-section>
             <q-card-section>
                 <div class="row q-col-gutter-md">
-                    <div class="col-12 col-sm-6">
+                    <div class="col-12 col-sm-2" v-if="title.length">
+                            <q-input color="primary" type="text" filled v-model="title" label="Title"/>
+                        </div>
+                    <div class="col-12 col-sm-4">
                         <q-input color="primary" type="text" filled v-model="surname" label="Surname" readonly />
                     </div>
                     <div class="col-12 col-sm-6">
@@ -40,8 +43,14 @@
                     <div class="col-12 col-sm-6">
                         <q-input color="primary" type="tel" filled v-model="phone" label="Phone Number" readonly />
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 col-sm-6" v-if="staffStatus.toLowerCase() == 'academic'">
+                        <q-input filled v-model="academicStatus" color="primary" label="Status"  readonly />
+                    </div>
+                    <div class="col-12" v-else>
                         <q-input filled v-model="designation" color="primary" label="Status"  readonly />
+                    </div>
+                    <div class="col-12 col-sm-6" v-if="staffStatus.toLowerCase() == 'academic'">
+                        <q-input filled v-model="orcidNum" color="primary" label="Orcid Number"  readonly />
                     </div>
                     <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
                         <q-input filled v-model="college" color="primary" label="College"  readonly />
@@ -51,6 +60,9 @@
                     </div>
                     <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
                         <q-input filled v-model="department" color="primary" label="Department"  readonly />
+                    </div>
+                    <div class="col-12">
+                        <q-input filled v-model="website" color="primary" label="Personal Website"  readonly />
                     </div>
                     <div class="col-12 text-center">
                         <q-btn outline rounded no-caps icon-right="mdi-account" color="primary" style="width: 40%;" label="Edit Profile" @click="openEditProfileDialog()" />
@@ -68,6 +80,9 @@
                 </q-card-section>
                 <q-card-section>
                     <div class="row q-col-gutter-md">
+                        <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
+                            <q-select filled v-model="edit_title" color="primary" :options="edit_titleOptions" label="Title" />
+                        </div>
                         <div class="col-12 col-sm-6">
                             <q-input color="primary" type="text" filled v-model="edit_surname" label="Surname"/>
                         </div>
@@ -80,8 +95,15 @@
                         <div class="col-12 col-sm-6">
                             <q-input color="primary" type="tel" filled v-model="edit_phone" label="Phone Number"/>
                         </div>
-                        <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
-                            <q-select filled v-model="edit_designation" color="primary" :options="edit_designationOptions" label="Status" />
+                        <div class="col-12" :class="staffStatus.toLowerCase() == 'academic' ?  'col-sm-6' : ''">
+                            <q-input color="primary" type="url" filled v-model="edit_website" label="Website URL"/>
+                        </div>
+                        <div class="col-12 col-sm-6" v-if="staffStatus.toLowerCase() == 'academic'">
+                            <q-input color="primary" type="text" filled v-model="edit_orcidNum" label="Orcid Number"/>
+                        </div>
+                        <div class="col-12" >
+                            <q-select v-if="staffStatus.toLowerCase() == 'academic'" filled v-model="edit_academicStatus" color="primary" :options="edit_academicStatusOptions" label="Status" />
+                            <q-select v-else filled v-model="edit_academicStatus" color="primary" :options="edit_designationOptions" label="Status" />
                         </div>
                         <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
                             <q-select filled v-model="edit_college" color="primary" :options="collegeOptions" label="College" />
@@ -111,7 +133,13 @@ import { Loading, QSpinnerGears } from 'quasar';
 export default {
     name: 'Staff-Profile',
     computed: {
-        ...mapGetters('staff', ['getUser', 'getBouestiStructure']),
+        ...mapGetters('staff', [
+            'getUser',
+            'getBouestiStructure',
+            'getBouestiAcademicStatus',
+            'getBouestiStaffTitle',
+            'getBouestiStaffDesignation',
+            ]),
         getDp () {
             const _ = this
             var src = _.getUser.displayImage
@@ -127,41 +155,75 @@ export default {
         return {
             staffStatus: '',
             editProfileModal: false,
+            title: '',
             surname: '',
             otherNames: '',
             email: '',
             phone: '',
+            orcidNum: '',
             designation: '',
+            academicStatus: '',
             college: '',
             school: '',
             department: '',
             fileSelector: null,
             displayImage: null,
+            website: '',
+            // Edit Section...
+            edit_title: '',
+            edit_titleOptions: [],
+            edit_academicStatusOptions: [],
             edit_surname: '',
             edit_otherNames: '',
             edit_email: '',
+            edit_academicStatus: '',
             edit_phone: '',
+            edit_orcidNum: '',
             edit_designation: '',
+            edit_academic_status: '',
             edit_college: '',
             edit_school: '',
             edit_department: '',
             edit_designationOptions: [],
+            edit_academic_statusOptions: [],
             edit_schoolOptions: [],
             edit_departmentOptions: [],
+            edit_website: '',
         }
     },
     mounted () {
         const _ = this
-        const { surname, otherNames, email, phone, title, college, school, department, designation, displayImage, staffStatus } = _.getUser;
+        
+        const {
+            surname,
+            otherNames,
+            email,
+            phone,
+            title,
+            college,
+            school,
+            department,
+            designation,
+            displayImage,
+            staffStatus,
+            academicStatus,
+            orcidNum,
+            website
+        } = _.getUser;
+
         _.staffStatus = staffStatus
+        _.title = title
         _.surname = surname
         _.otherNames = otherNames
         _.email = email
         _.phone = phone
+        _.orcidNum = orcidNum
         _.college = college
         _.school = school
+        _.website = website
         _.department = department
         _.designation = designation
+        _.academicStatus = academicStatus
         _.displayImage = displayImage
     },
     methods: {
@@ -170,6 +232,9 @@ export default {
             const _ = this
             _.editProfileModal = !_.editProfileModal
             _.edit_surname = _.surname
+            _.edit_title = _.title
+            _.edit_website = _.website
+            _.edit_orcidNum = _.orcidNum
             _.edit_otherNames = _.otherNames
             _.edit_email = _.email
             _.edit_phone = _.phone
@@ -177,11 +242,16 @@ export default {
             _.edit_college = _.college
             _.edit_school = _.school
             _.edit_department = _.department
+            _.edit_academicStatus = _.academicStatus
+            _.edit_academicStatusOptions  = _.getBouestiAcademicStatus
+            _.edit_designationOptions  = _.getBouestiStaffDesignation
+            _.edit_titleOptions  = _.getBouestiStaffTitle
         },
         updateProfile () {
             const _ = this
             _.editProfileModal = true
             const dataObj = {
+                title: _.edit_title || _.title,
                 surname: _.edit_surname,
                 otherNames: _.edit_otherNames,
                 email: _.edit_email,
@@ -190,6 +260,8 @@ export default {
                 college: _.edit_college,
                 school: _.edit_school || _.school,
                 department: _.edit_department || _.department,
+                website: _.edit_website || _.website,
+                orcidNum: _.edit_orcidNum,
             }
             const userRef = doc(db, "allStaff", _.getUser.id);
 

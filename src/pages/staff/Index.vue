@@ -4,7 +4,7 @@
             <div class="text-h2 text-bold text-primary q-pl-md"> Login </div>
             <div class="q-pa-md">
                 <div class="q-gutter-y-md column">
-                    <q-input color="primary" type="email" filled v-model="email" label="Email:">
+                    <q-input color="primary" type="email" filled v-model="email" label="Institutional Email:">
                         <template #append>
                             <q-icon name="email" />
                         </template>

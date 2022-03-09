@@ -5,8 +5,10 @@ export function LOAD_BOUESTI_STRUCTURES (state, payload) {
 export function LOAD_BOUESTI_STAFF_TITLE (state, payload) {
     var staff_title = payload['title']
    var staff_designation = payload['designation']
+   var academic_status = payload['academic_status']
     state.bouesti_staff_title = staff_title.sort()
     state.bouesti_staff_designation = staff_designation.sort()
+    state.bouesti_academic_status = academic_status.sort()
 }
 
 export function LOAD_CURRENT_USER (state, payload) {

@@ -104,6 +104,7 @@ export default function () {
       // },
     ],
     bouesti_structure: {},
+    bouesti_academic_status: [],
     bouesti_staff_title: [],
     bouesti_staff_designation: [],
   }
