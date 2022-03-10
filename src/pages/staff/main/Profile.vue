@@ -251,21 +251,23 @@ export default {
             const _ = this
             _.editProfileModal = true
             const dataObj = {
+                // The only data you use the OR syntax should be for those that MUST not be empty, i.e, there must be a value...
                 title: _.edit_title || _.title,
-                surname: _.edit_surname,
-                otherNames: _.edit_otherNames,
+                surname: _.edit_surname || _.surname,
+                otherNames: _.edit_otherNames || _.otherNames,
                 email: _.edit_email,
-                phone: _.edit_phone,
+                phone: _.edit_phone || _.phone,
                 designation: _.edit_designation,
                 college: _.edit_college,
                 school: _.edit_school || _.school,
                 department: _.edit_department || _.department,
-                website: _.edit_website || _.website,
+                website: _.edit_website,
                 orcidNum: _.edit_orcidNum,
+                academicStatus: _.edit_academicStatus || academicStatus
             }
+            console.log(dataObj)
             const userRef = doc(db, "allStaff", _.getUser.id);
-
-            // Update the user account
+            // Example of Orcid number: https://orcid.org/0000-0001-6499-0574
             updateDoc(userRef, dataObj)
             _.editProfileModal = false
             _.UPDATE_STAFF(dataObj)
