@@ -53,11 +53,22 @@
                                         </q-item-section>
                                     </q-item>
                                     <q-separator />
-                                    <a :href="`https://orcid.org/${currentStaff.orcidNum}`" target="_blank" rel="noopener noreferrer" v-if="currentStaff.staffStatus.toLowerCase() == 'academic'">
+                                    <!-- <a :href="`https://orcid.org/${currentStaff.orcidNum}`" target="_blank" rel="noopener noreferrer" v-if="currentStaff.staffStatus.toLowerCase() == 'academic'"> -->
+                                    <a :href="`https://orcid.org/${currentStaff.orcidNum}`" target="_blank" rel="noopener noreferrer" v-if="currentStaff.staffStatus.toLowerCase() == 'academic' && currentStaff.orcidNum">
                                         <q-item clickable v-ripple>
                                             <q-item-section>
                                                 <q-item-label overline> Orcid Number </q-item-label>
                                                 <q-item-label > {{ currentStaff.orcidNum }} </q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+                                    </a>
+                                    <q-separator />
+                                    <!-- <a :href="`https://publons.com/researcher/${currentStaff.publonNum ? currentStaff.publonNum : ''}`" target="_blank" rel="noopener noreferrer" v-if="currentStaff.staffStatus.toLowerCase() == 'academic'"> -->
+                                    <a :href="`https://publons.com/researcher/${currentStaff.publonNum ? currentStaff.publonNum : ''}`" target="_blank" rel="noopener noreferrer" v-if="currentStaff.staffStatus.toLowerCase() == 'academic' && currentStaff.publonNum">
+                                        <q-item clickable v-ripple>
+                                            <q-item-section>
+                                                <q-item-label overline> Publon Number </q-item-label>
+                                                <q-item-label > {{ currentStaff.publonNum }} </q-item-label>
                                             </q-item-section>
                                         </q-item>
                                     </a>
@@ -169,6 +180,7 @@ export default {
                 pubLink: '',
                 website: '',
                 orcidNum: '',
+                publonNum: '',
                 publications: []
             }
         }

@@ -53,6 +53,9 @@
                         <q-input filled v-model="orcidNum" color="primary" label="Orcid Number"  readonly />
                     </div>
                     <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
+                        <q-input filled v-model="publonNum" color="primary" label="Publon Number"  readonly />
+                    </div>
+                    <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
                         <q-input filled v-model="college" color="primary" label="College"  readonly />
                     </div>
                     <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
@@ -101,6 +104,9 @@
                         <div class="col-12 col-sm-6" v-if="staffStatus.toLowerCase() == 'academic'">
                             <q-input color="primary" type="text" filled v-model="edit_orcidNum" label="Orcid Number"/>
                         </div>
+                        <div class="col-12" v-if="staffStatus.toLowerCase() == 'academic'">
+                            <q-input color="primary" type="text" filled v-model="edit_publonNum" label="Publon Number"/>
+                        </div>
                         <div class="col-12" >
                             <q-select v-if="staffStatus.toLowerCase() == 'academic'" filled v-model="edit_academicStatus" color="primary" :options="edit_academicStatusOptions" label="Status" />
                             <q-select v-else filled v-model="edit_academicStatus" color="primary" :options="edit_designationOptions" label="Status" />
@@ -126,7 +132,7 @@
 
 <script>
 import db from 'src/boot/firebase.js'
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, setDoc,  updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL   } from "firebase/storage";
 import { mapGetters, mapActions } from 'vuex';
 import { Loading, QSpinnerGears } from 'quasar';
@@ -161,6 +167,7 @@ export default {
             email: '',
             phone: '',
             orcidNum: '',
+            publonNum: '',
             designation: '',
             academicStatus: '',
             college: '',
@@ -179,6 +186,7 @@ export default {
             edit_academicStatus: '',
             edit_phone: '',
             edit_orcidNum: '',
+            edit_publonNum: '',
             edit_designation: '',
             edit_academic_status: '',
             edit_college: '',
@@ -193,6 +201,7 @@ export default {
     },
     mounted () {
         const _ = this
+        console.log('George this is the profile: '+JSON.stringify(_.getUser));
         
         const {
             surname,
@@ -208,6 +217,7 @@ export default {
             staffStatus,
             academicStatus,
             orcidNum,
+            publonNum,
             website
         } = _.getUser;
 
@@ -218,6 +228,7 @@ export default {
         _.email = email
         _.phone = phone
         _.orcidNum = orcidNum
+        _.publonNum = publonNum
         _.college = college
         _.school = school
         _.website = website
@@ -235,6 +246,7 @@ export default {
             _.edit_title = _.title
             _.edit_website = _.website
             _.edit_orcidNum = _.orcidNum
+            _.edit_publonNum = _.publonNum
             _.edit_otherNames = _.otherNames
             _.edit_email = _.email
             _.edit_phone = _.phone
@@ -263,12 +275,14 @@ export default {
                 department: _.edit_department || _.department,
                 website: _.edit_website,
                 orcidNum: _.edit_orcidNum,
+                publonNum: _.edit_publonNum,
                 academicStatus: _.edit_academicStatus || academicStatus
             }
-            console.log(dataObj)
             const userRef = doc(db, "allStaff", _.getUser.id);
             // Example of Orcid number: https://orcid.org/0000-0001-6499-0574
-            updateDoc(userRef, dataObj)
+            // Example of Publon number: https://publons.com/researcher/AHE-8506-2022/
+            // updateDoc(userRef, dataObj)
+            setDoc(userRef, dataObj, {merge: true});
             _.editProfileModal = false
             _.UPDATE_STAFF(dataObj)
         },

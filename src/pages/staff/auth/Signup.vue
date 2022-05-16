@@ -201,12 +201,14 @@ export default {
                     pubLink: '',
                     displayImage: '',
                     orcidNum: '',
+                    publonNum: '',
                     website: '',
                     academicStatus: _.academicStatus,
                     })
             }).then((res) => {
                 _.isLoading = false
-                _.notifyAlert('info', 'mdi-access-point', 'Successfully Logged In', 'bottom')
+                _.notifyAlert('info', 'mdi-access-point', 'Successfully Registered', 'bottom')
+                // _.notifyAlert('info', 'mdi-access-point', 'Successfully Logged In', 'bottom')
                 _.$router.push({name: 'Staff_auth'})
             })
             .catch((error) => {
@@ -214,7 +216,8 @@ export default {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log(errorMessage)
-                _.notifyAlert('negative', 'mdi-alert', 'Please password must be 6 characters and above', 'bottom')
+                // _.notifyAlert('negative', 'mdi-alert', 'Please password must be 6 characters and above', 'bottom')
+                _.notifyAlert('negative', 'mdi-alert', 'Please contact admin for assistance', 'bottom')
             });
         },
         notifyAlert (type, icon, msg, position) {
